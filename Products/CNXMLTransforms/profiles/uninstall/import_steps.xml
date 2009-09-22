@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<import-steps>
+  <import-step id="cnxmltransforms-uninstall" version="20090921-01"
+      handler="Products.CNXMLTransforms.setuphandlers.uninstall"
+      title="">
+    Uninstall CNXMLTransforms
+  </import-step>
+</import-steps>
