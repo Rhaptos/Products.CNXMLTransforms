@@ -12,8 +12,6 @@ import sys
 from Products.CMFCore import utils
 from AccessControl import ModuleSecurityInfo
 
-# import to check syntax
-from Extensions import Install
 from Products.CNXMLTransforms.OOoImport import oo_to_cnxml
 from Products.CNXMLTransforms.AuthenticImport import authentic_to_cnxml
 from Products.CNXMLTransforms.XHTMLImport import xhtml_to_cnxml
