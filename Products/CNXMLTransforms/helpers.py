@@ -55,7 +55,8 @@ from config import GLOBALS
 
 OO2CNXML_XSL = os.path.join(package_home(GLOBALS), 'www', 'oo2cnxml.xsl')
 OO2OO_XSL = os.path.join(package_home(GLOBALS), 'www', 'oo2oo.xsl')
-OOCONVERT = os.path.join(package_home(GLOBALS), 'Extensions', 'ooconvert.py')
+##OOCONVERT = os.path.join(package_home(GLOBALS), 'Extensions', 'ooconvert.py')
+OOCONVERT = os.getenv('OOCONVERT', os.path.join(package_home(GLOBALS), 'Extensions', 'ooconvert.py'))
 CNXMLTIDY_XSL = os.path.join(package_home(GLOBALS), 'www', 'cnxmltidy.xsl')
 XSL_LOCATION = os.path.join(package_home(GLOBALS), 'www')
 
