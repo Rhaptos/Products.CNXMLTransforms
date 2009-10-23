@@ -16,7 +16,7 @@ NOTE: see OOoTransform header about compatibility with Archetypes fields.
 from StringIO import StringIO
 import os
 import shutil
-from zipfile import ZipFile, ZIP_DEFLATED
+from zipfile import ZipFile, ZIP_DEFLATED, is_zipfile
 import tempfile
 import zLOG
 from Globals import package_home
@@ -122,7 +122,7 @@ class latex_to_folder:
         else:
             strZipFile = strHarvestedFileName
 
-        if not strZipFile.endswith('.zip'):
+        if not is_zipfile(strZipFile):
             zLOG.LOG("LaTeX2CNXML Transform", zLOG.INFO, "expecting a .zip file and got a " + strExt + " file.")
             self.moveToBad(strHarvestedFileName)
             raise OOoImportError, "Expecting a .zip file containing your .tex and auxiliary files. Instead got a " + strExt + " file.  See the below LaTeX importer instruction page link for help."
