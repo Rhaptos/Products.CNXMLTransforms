@@ -127,7 +127,8 @@ class latex_to_folder:
             self.moveToBad(strHarvestedFileName)
             raise OOoImportError, "Expecting a .zip file containing your .tex and auxiliary files. Instead got a " + strExt + " file.  See the below LaTeX importer instruction page link for help."
 
-        strScript = os.path.join(package_home(GLOBALS), 'LatexImport.bash')
+        #strScript = os.path.join(package_home(GLOBALS), 'LatexImport.bash')
+        strScript = os.getenv('LATEXIMPORT', os.path.join(package_home(GLOBALS), 'LatexImport.bash'))
 
         args = ['LatexImport.bash', strBaseName, strZipFile, strTempWorkingDirectory, XSL_LOCATION, CNXML_AUTOID_XSL]
         zLOG.LOG("LaTeX2CNXML Transform", zLOG.INFO,
