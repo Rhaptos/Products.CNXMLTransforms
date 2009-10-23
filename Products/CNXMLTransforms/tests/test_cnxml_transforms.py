@@ -26,17 +26,27 @@ $Id: $
 
 import Products.CNXMLTransforms
 
-from Products.RhaptosTest import base
+from Products.RhaptosTest.base import RhaptosTestCase
 
 
-base.PRODUCTS_TO_LOAD_ZCML = [('configure.zcml', Products.CNXMLTransforms),]
-base.PRODUCTS_TO_INSTALL = ['Products.CNXMLTransforms',]
+class TestCNXMLTransforms(RhaptosTestCase):
 
+    products_to_load_zcml = [('configure.zcml', Products.CNXMLTransforms),]
 
-class TestCNXMLTransforms(base.RhaptosTestCase):
+    def setUp(self):
+        RhaptosTestCase.setUp(self)
 
-    def test_pass(self):
-        assert 1 == 1
+    def test_latex_to_folder(self):
+        self.assertEqual(1, 1)
+
+    def test_oo_to_cnxml(self):
+        self.assertEqual(1, 1)
+
+    def test_folder_to_zip(self):
+        self.assertEqual(1, 1)
+
+    def test_zip_to_folder(self):
+        self.assertEqual(1, 1)
 
 
 def test_suite():
