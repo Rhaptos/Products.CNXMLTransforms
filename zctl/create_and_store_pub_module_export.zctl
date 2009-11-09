@@ -1,0 +1,54 @@
+import sys
+import transaction
+
+from Products.CMFCore.utils import getToolByName
+from Products.CNXMLTransforms.helpers import doTransform
+from Products.RhaptosSite.utils import kill_other_threads_and_exit
+
+from AccessControl.SecurityManagement import newSecurityManager
+from Products.CMFCore.tests.base.security import AnonymousUser, OmnipotentUser
+user = OmnipotentUser().__of__(app)
+newSecurityManager(None, user)
+
+from Testing.makerequest import makerequest
+app=makerequest(app)
+
+if len(sys.argv) < 2:
+    print "The script requires one parameter for the request key."
+    sys.exit(0xDEADBEEF)
+
+key = sys.argv[1]
+
+portal = app.objectValues(['Plone Site','CMF Site'])[0]
+qtool = getToolByName(portal, "queue_tool") # app.plone.queue_tool
+
+# expecting something like: dictRequest = { "id":"col10208", "version":"1.5" }
+dictRequest = qtool.getRequest(key)
+if dictRequest is not None:
+    qtool.start(key)
+    transaction.commit()
+
+    try:
+        # get ModuleView object
+        id = dictRequest["id"]
+        version = dictRequest["version"]
+        mvObj = portal.content[id][version]
+
+        # create zip
+        bytes = doTransform(mvObj, "folder_to_zip", mvObj)[0]
+
+        # store zip in RhaptosPrint
+        ptool = getToolByName(app.plone,'rhaptos_print')
+        ptool.setFile(id, version, 'zip', bytes)
+        transaction.commit()
+    except:
+        pass
+
+    qtool.stop(key)
+    transaction.commit()
+    print "Creation of a module export zip is now complete."
+
+    kill_other_threads_and_exit()
+else:
+    print "Could not find the request from the input request key."
+    sys.exit(0xDEADBEEF)
