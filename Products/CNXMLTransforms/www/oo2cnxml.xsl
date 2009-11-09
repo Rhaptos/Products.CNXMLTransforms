@@ -40,10 +40,11 @@
 
   <xsl:template match="/">
 
-    <document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml/0.4" xmlns:bib="http://bibtexml.sf.net/" xmlns:q="http://cnx.rice.edu/qml/1.0" module-id="m12345" cnxml-version="0.6">
+    <document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml/0.4" xmlns:bib="http://bibtexml.sf.net/" xmlns:q="http://cnx.rice.edu/qml/1.0" module-id="m12345" cnxml-version="0.7">
       <xsl:attribute name="id">
         <xsl:value-of select ="generate-id()" />
       </xsl:attribute> 
+
       <title>
         <xsl:choose>
           <xsl:when test="//office:document-content/office:body//text:p[@text:style-name='Title']">
@@ -54,37 +55,6 @@
           </xsl:otherwise>
         </xsl:choose>
       </title>
-      <metadata>
-        <md:content-id>m12345</md:content-id>
-        <md:title>Untitled Document</md:title>
-        <md:version>1.0</md:version>
-        <md:created>1970/01/01 00:00:00 GMT-0</md:created>
-        <md:revised>1970/01/01 00:00:00 GMT-0</md:revised>
-        <md:authorlist>
-        <md:author id="zeus">
-            <md:firstname></md:firstname>
-            <md:surname></md:surname>
-            <md:fullname></md:fullname>
-        </md:author>
-        </md:authorlist>
-        <md:maintainerlist>
-        <md:maintainer id="zeus">
-            <md:firstname></md:firstname>
-            <md:surname></md:surname>
-            <md:fullname></md:fullname>
-        </md:maintainer>
-        </md:maintainerlist>
-        <md:license href="http://creativecommons.org/licenses/by/1.0"/>
-        <md:licensorlist>
-        <md:licensor id="zeus">
-            <md:firstname></md:firstname>
-            <md:surname></md:surname>
-            <md:fullname></md:fullname>
-        </md:licensor>
-        </md:licensorlist>
-        <md:abstract/>
-        <md:language>en</md:language>
-      </metadata>
 
       <content>
         <xsl:choose>

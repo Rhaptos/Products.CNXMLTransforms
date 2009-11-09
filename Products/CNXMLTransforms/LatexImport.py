@@ -56,6 +56,8 @@ class latex_to_folder:
         bSaveToTemp = True
         bHarvestingOn = ( len(self.config['harvest_dir_success']) > 0 )
         # zLOG.LOG("OOo2CNXML Transform", zLOG.INFO, "bHarvestingOn is %s" % bHarvestingOn)
+        (strHead, strTail) = os.path.split(strOriginalFileName)
+        (strRoot, strExt)  = os.path.splitext(strTail)
 
         if bHarvestingOn:
             strHarvestDirectory = self.config['harvest_dir_success']
@@ -69,7 +71,8 @@ class latex_to_folder:
                 zLOG.LOG("LaTeX2CNXML Transform", zLOG.INFO, "Failed to harvest imported LaTeX doc " + strOriginalFileName + " to directory " + strHarvestDirectory)
 
         if bSaveToTemp:
-            strFileName = tempfile.mktemp()
+            strFileName = tempfile.mktemp(suffix=strExt)
+            # zLOG.LOG("OOo2CNXML Transform", zLOG.INFO, "No harvested directory.  Writing to temporary file instead: %s" % strFileName)
             file = open(strFileName, 'w')
             file.write(binData)
             file.close()

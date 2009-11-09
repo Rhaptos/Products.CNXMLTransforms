@@ -32,44 +32,13 @@
   <xsl:key name="citation_by_id" match="citation" use="@id" />
 
   <xsl:template match="/">
-    <document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml/0.4" xmlns:bib="http://bibtexml.sf.net/" xmlns:q="http://cnx.rice.edu/qml/1.0" module-id="m12345" cnxml-version="0.6">
+    <document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml/0.4" xmlns:bib="http://bibtexml.sf.net/" xmlns:q="http://cnx.rice.edu/qml/1.0" module-id="m12345" cnxml-version="0.7">
       <xsl:attribute name="id">
         <xsl:value-of select ="generate-id()" />
       </xsl:attribute>
       <title>
         <xsl:text>Untitled Document</xsl:text>
       </title>
-      <metadata>
-        <md:content-id>m12345</md:content-id>
-        <md:title>Untitled Document</md:title>
-        <md:version>1.0</md:version>
-        <md:created>1970/01/01 00:00:00 GMT-0</md:created>
-        <md:revised>1970/01/01 00:00:00 GMT-0</md:revised>
-        <md:authorlist>
-        <md:author id="zeus">
-            <md:firstname></md:firstname>
-            <md:surname></md:surname>
-            <md:fullname></md:fullname>
-        </md:author>
-        </md:authorlist>
-        <md:maintainerlist>
-        <md:maintainer id="zeus">
-            <md:firstname></md:firstname>
-            <md:surname></md:surname>
-            <md:fullname></md:fullname>
-        </md:maintainer>
-        </md:maintainerlist>
-        <md:license href="http://creativecommons.org/licenses/by/1.0"/>
-        <md:licensorlist>
-        <md:licensor id="zeus">
-            <md:firstname></md:firstname>
-            <md:surname></md:surname>
-            <md:fullname></md:fullname>
-        </md:licensor>
-        </md:licensorlist>
-        <md:abstract/>
-        <md:language>en</md:language>
-      </metadata>
 
       <content>
         <xsl:apply-templates />
@@ -323,7 +292,7 @@
               </xsl:attribute>
               <!-- @width - populate this attribute from the actual image dimensions. -->
             </image>
-            <image mime-type='application/postscript' src='{$file}.eps'>
+            <image mime-type='application/postscript' for='pdf' src='{$file}.eps'>
               <xsl:attribute name="id" >
                 <xsl:value-of select="concat($idbase,'_printimage')" />
               </xsl:attribute>
@@ -404,7 +373,7 @@
                 <xsl:value-of select="concat($idbase,'_onlineimage')" />
               </xsl:attribute>
             </image>
-            <image mime-type='application/postscript' src='{$file}.eps'>
+            <image mime-type='application/postscript' for='pdf' src='{$file}.eps'>
               <xsl:attribute name="id" >
                 <xsl:value-of select="concat($idbase,'_printimage')" />
               </xsl:attribute>
@@ -465,7 +434,7 @@
             <xsl:value-of select="concat($idbase,'_onlinemedia')" />
           </xsl:attribute>
         </image>
-        <image mime-type='application/postscript' src='{$file}.eps'>
+        <image mime-type='application/postscript' for='pdf' src='{$file}.eps'>
           <xsl:attribute name="id" >
             <xsl:value-of select="concat($idbase,'_printmedia')" />
           </xsl:attribute>
@@ -514,7 +483,7 @@
             <xsl:value-of select="concat($idbase,'_onlineimage')" />
           </xsl:attribute>
         </image>
-        <image mime-type='application/postscript' src='{$file}.eps'>
+        <image mime-type='application/postscript' for='pdf' src='{$file}.eps'>
           <xsl:attribute name="id" >
             <xsl:value-of select="concat($idbase,'_printimage')" />
           </xsl:attribute>
@@ -1648,255 +1617,9 @@
     <!-- tralics made this up so we ignore.  no way to <cite> in MathML. -->
   </xsl:template>
 
-  <!-- mover subscripts and superscripts out of MathML -->
-
   <!-- but not in the bib -->
   <xsl:template match="formula" mode="biblio">
     <xsl:comment>no math allowed in bib entries</xsl:comment>
-  </xsl:template>
-
-  <!-- $x^{y}$ -->
-  <xsl:template match="formula[@type='inline' and
-                               string-length(normalize-space(text()))=0 and
-                               count(child::*)=1 and
-                               m:math[string-length(normalize-space(text()))=0 and
-                                      count(child::*)=1 and
-                                      m:msup[string-length(normalize-space(text()))=0 and
-                                             count(child::*)=2 and
-                                             count(child::m:mi)=2
-                                            ]
-                                     ]
-                              ]">
-    <emphasis effect='italics'><xsl:value-of select="normalize-space(m:math/m:msup/child::*[1]/text())"/><sup><xsl:value-of select="normalize-space(m:math/m:msup/child::*[2]/text())"/></sup></emphasis>
-  </xsl:template>
-
-  <xsl:template match="formula[@type='inline' and
-                               string-length(normalize-space(text()))=0 and
-                               count(child::*)=1 and
-                               m:math[string-length(normalize-space(text()))=0 and
-                                      count(child::*)=1 and
-                                      m:msup[string-length(normalize-space(text()))=0 and
-                                             count(child::*)=2 and
-                                             count(child::m:mi)=1 and
-                                             count(child::m:mn)=1
-                                            ]
-                                     ]
-                              ]">
-    <emphasis effect='italics'><xsl:value-of select="normalize-space(m:math/m:msup/child::*[1]/text())"/><sup><xsl:value-of select="normalize-space(m:math/m:msup/child::*[2]/text())"/></sup></emphasis>
-  </xsl:template>
-
-  <xsl:template match="formula[@type='inline' and
-                               string-length(normalize-space(text()))=0 and
-                               count(child::*)=1 and
-                               m:math[string-length(normalize-space(text()))=0 and
-                                      count(child::*)=1 and
-                                      m:msup[string-length(normalize-space(text()))=0 and
-                                             count(child::*)=2 and
-                                             count(child::m:mi)=1 and
-                                             count(child::m:mo)=1 and
-                                             child::*[1]=m:mi
-                                            ]
-                                     ]
-                              ]">
-    <emphasis effect='italics'><xsl:value-of select="normalize-space(m:math/m:msup/child::*[1]/text())"/><sup><emphasis effect='normal'><xsl:value-of select="normalize-space(m:math/m:msup/child::*[2]/text())"/></emphasis></sup></emphasis>
-  </xsl:template>
-
-  <!-- x$^{y}$ -->
-  <xsl:template match="formula[@type='inline' and
-                               string-length(normalize-space(text()))=0 and
-                               count(child::*)=1 and
-                               m:math[string-length(normalize-space(text()))=0 and
-                                      count(child::*)=1 and
-                                      m:msup[string-length(normalize-space(text()))=0 and
-                                             count(child::*)=2 and
-                                             m:mrow[position()=1 and
-                                                    count(child::*)=0 and
-                                                    string-length(normalize-space(text()))=0
-                                                  ] and
-                                             (m:mi|m:mn)
-                                            ]
-                                     ]
-                              ]">
-    <emphasis effect='italics'><sup><xsl:value-of select="normalize-space(m:math/m:msup/child::*[2]/text())"/></sup></emphasis>
-  </xsl:template>
-
-  <xsl:template match="formula[@type='inline' and
-                               string-length(normalize-space(text()))=0 and
-                               count(child::*)=1 and
-                               m:math[string-length(normalize-space(text()))=0 and
-                                      count(child::*)=1 and
-                                      m:msup[string-length(normalize-space(text()))=0 and
-                                             count(child::*)=1 and
-                                             m:mo
-                                            ]
-                                     ]
-                              ]">
-    <sup><xsl:value-of select="normalize-space(m:math/m:msup/m:mi/text())"/></sup>
-  </xsl:template>
-
-  <xsl:template match="formula[@type='inline' and
-                               string-length(normalize-space(text()))=0 and
-                               count(child::*)=1 and
-                               m:math[string-length(normalize-space(text()))=0 and
-                                      count(child::*)=1 and
-                                      m:msup[string-length(normalize-space(text()))=0 and
-                                             count(child::*)=1 and
-                                             (m:mi or m:mn)
-                                            ]
-                                     ]
-                              ]">
-    <xsl:apply-templates/>
-  </xsl:template>
-
-  <!-- $x_{y}$ -->
-  <xsl:template match="formula[@type='inline' and
-                               string-length(normalize-space(text()))=0 and
-                               count(child::*)=1 and
-                               m:math[string-length(normalize-space(text()))=0 and
-                                      count(child::*)=1 and
-                                      m:msub[string-length(normalize-space(text()))=0 and
-                                             count(child::*)=2 and
-                                             count(child::m:mi)=2
-                                            ]
-                                     ]
-                              ]">
-    <emphasis effect='italics'><xsl:value-of select="normalize-space(m:math/m:msub/child::*[1]/text())"/><sub><xsl:value-of select="normalize-space(m:math/m:msub/child::*[2]/text())"/></sub></emphasis>
-  </xsl:template>
-
-  <xsl:template match="formula[@type='inline' and
-                               string-length(normalize-space(text()))=0 and
-                               count(child::*)=1 and
-                               m:math[string-length(normalize-space(text()))=0 and
-                                      count(child::*)=1 and
-                                      m:msub[string-length(normalize-space(text()))=0 and
-                                             count(child::*)=2 and
-                                             count(child::m:mi)=1 and
-                                             count(child::m:mn)=1
-                                            ]
-                                     ]
-                              ]">
-    <emphasis effect='italics'><xsl:value-of select="normalize-space(m:math/m:msub/child::*[1]/text())"/><sub><xsl:value-of select="normalize-space(m:math/m:msub/child::*[2]/text())"/></sub></emphasis>
-  </xsl:template>
-
-  <xsl:template match="formula[@type='inline' and
-                               string-length(normalize-space(text()))=0 and
-                               count(child::*)=1 and
-                               m:math[string-length(normalize-space(text()))=0 and
-                                      count(child::*)=1 and
-                                      m:msub[string-length(normalize-space(text()))=0 and
-                                             count(child::*)=2 and
-                                             count(child::m:mi)=1 and
-                                             count(child::m:mo)=1 and
-                                             child::*[1]=m:mi
-                                            ]
-                                     ]
-                              ]">
-    <emphasis effect='italics'><xsl:value-of select="normalize-space(m:math/m:msub/child::*[1]/text())"/><sub><emphasis effect='normal'><xsl:value-of select="normalize-space(m:math/m:msub/child::*[2]/text())"/></emphasis></sub></emphasis>
-  </xsl:template>
-
-  <!-- x$_{y}$ -->
-  <xsl:template match="formula[@type='inline' and
-                               string-length(normalize-space(text()))=0 and
-                               count(child::*)=1 and
-                               m:math[string-length(normalize-space(text()))=0 and
-                                      count(child::*)=1 and
-                                      m:msub[string-length(normalize-space(text()))=0 and
-                                             count(child::*)=2 and
-                                             m:mrow[position()=1 and
-                                                    count(child::*)=0 and
-                                                    string-length(normalize-space(text()))=0
-                                                  ] and
-                                             m:mi
-                                            ]
-                                     ]
-                              ]">
-    <emphasis effect='italics'><sub><xsl:value-of select="normalize-space(m:math/m:msub/m:mi/text())"/></sub></emphasis>
-  </xsl:template>
-
-  <xsl:template match="formula[@type='inline' and
-                               string-length(normalize-space(text()))=0 and
-                               count(child::*)=1 and
-                               m:math[string-length(normalize-space(text()))=0 and
-                                      count(child::*)=1 and
-                                      m:msub[string-length(normalize-space(text()))=0 and
-                                             count(child::*)=1 and
-                                             count(child::m:mo)=1
-                                            ]
-                                     ]
-                              ]">
-    <sub><xsl:value-of select="normalize-space(m:math/m:msub/m:mo/text())"/></sub>
-  </xsl:template>
-
-  <xsl:template match="formula[@type='inline' and
-                               string-length(normalize-space(text()))=0 and
-                               count(child::*)=1 and
-                               m:math[string-length(normalize-space(text()))=0 and
-                                      count(child::*)=1 and
-                                      m:msub[string-length(normalize-space(text()))=0 and
-                                             count(child::*)=1 and
-                                             count(child::m:mi)=1
-                                            ]
-                                     ]
-                              ]">
-    <xsl:apply-templates/>
-  </xsl:template>
-
-  <!-- $x_y^z$ -->
-  <xsl:template match="formula[@type='inline' and
-                               string-length(normalize-space(text()))=0 and
-                               count(child::*)=1 and
-                               m:math[string-length(normalize-space(text()))=0 and
-                                      count(child::*)=1 and
-                                      m:msubsup[string-length(normalize-space(text()))=0 and
-                                                count(child::*)=3 and
-                                                count(child::m:mi|child::m:mn)=3
-                                               ]
-                                     ]
-                              ]">
-    <!-- <xsl:comment>Gotcha!!!</xsl:comment> -->
-    <emphasis effect='italics'><xsl:value-of select="normalize-space(m:math/m:msubsup/child::*[1]/text())"/><sub><xsl:value-of select="normalize-space(m:math/m:msubsup/child::*[2]/text())"/></sub><sup><xsl:value-of select="normalize-space(m:math/m:msubsup/child::*[3]/text())"/></sup></emphasis>
-  </xsl:template>
-
-  <!-- x$_y^z$ -->
-  <xsl:template match="formula[@type='inline' and
-                               string-length(normalize-space(text()))=0 and
-                               count(child::*)=1 and
-                               m:math[string-length(normalize-space(text()))=0 and
-                                      count(child::*)=1 and
-                                      m:msubsup[string-length(normalize-space(text()))=0 and
-                                                m:mrow[position()=1 and
-                                                       count(child::*)=0 and
-                                                       string-length(normalize-space(text()))=0
-                                                      ] and
-                                                count(child::*)=3 and
-                                                count(child::m:mi|child::m:mn)=2
-                                               ]
-                                     ]
-                              ]">
-    <emphasis effect='italics'><sub><xsl:value-of select="normalize-space(m:math/m:msubsup/child::*[2]/text())"/></sub><sup><xsl:value-of select="normalize-space(m:math/m:msubsup/child::*[3]/text())"/></sup></emphasis>
-  </xsl:template>
-
-  <!-- $x$ -->
-  <xsl:template match="formula[@type='inline' and
-                               string-length(normalize-space(text()))=0 and
-                               count(child::*)=1 and
-                               m:math[string-length(normalize-space(text()))=0 and
-                                      count(child::*)=1 and
-                                      (m:mi or m:mn)
-                                      ]
-                              ]">
-    <emphasis effect='italics'><xsl:value-of select="normalize-space(m:math/m:mi/text())"/></emphasis>
-  </xsl:template>
-
-  <xsl:template match="formula[@type='inline' and
-                               string-length(normalize-space(text()))=0 and
-                               count(child::*)=1 and
-                               m:math[string-length(normalize-space(text()))=0 and
-                                      count(child::*)=1 and
-                                      (m:mi|m:mn)[@mathvariant='bold']
-                                      ]
-                              ]">
-    <emphasis effect='bold'><xsl:value-of select="normalize-space(m:math/m:mi/text())"/></emphasis>
   </xsl:template>
 
   <!-- there is no 'script' effect -->
@@ -1912,4 +1635,3 @@
   </xsl:template>
 
 </xsl:stylesheet>
-

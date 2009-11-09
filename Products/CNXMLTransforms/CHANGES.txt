@@ -1,3 +1,13 @@
+	- light-weight-branding (DATE)
+		- make latex importer work when harvesting is turned off. the temporary
+			file we create on the local FS must end '.zip'.  This change was made for Enterprise Rhaptos.
+
+CNXMLTransforms-0.14
+  - collection-structure-redesign-1 (Oct. 22, 2009)
+    - create ZCTL queue handler for Module export
+    - make Module Zip exportwork with published modules as well as RMEs
+    - update Latex and OO/Word converters to handle CNXML 0.7
+
 CNXMLTransforms-0.13
   - Module Edit Workflow (DATE)
     - DETAILS HERE      
