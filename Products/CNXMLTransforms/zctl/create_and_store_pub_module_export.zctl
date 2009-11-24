@@ -38,7 +38,7 @@ if dictRequest is not None:
         bytes = doTransform(mvObj, "folder_to_zip", mvObj)[0]
 
         # store zip in RhaptosPrint
-        ptool = getToolByName(app.plone,'rhaptos_print')
+        ptool = getToolByName(portal,'rhaptos_print')
         ptool.setFile(id, version, 'zip', bytes)
         transaction.commit()
     except:
