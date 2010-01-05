@@ -65,6 +65,8 @@ class oo_to_cnxml:
         bSaveToTemp = True
         bHarvestingOn = ( len(self.config['harvest_dir_success']) > 0 )
         # zLOG.LOG("OOo2CNXML Transform", zLOG.INFO, "bHarvestingOn is %s" % bHarvestingOn)
+        (strHead, strTail) = os.path.split(strOriginalFileName)
+        (strRoot, strExt)  = os.path.splitext(strTail)
 
         if bHarvestingOn:
             strHarvestDirectory = self.config['harvest_dir_success']
@@ -78,7 +80,7 @@ class oo_to_cnxml:
                 zLOG.LOG("OOo2CNXML Transform", zLOG.INFO, "Failed to harvest imported Word doc " + strOriginalFileName + " to directory " + strHarvestDirectory)
 
         if bSaveToTemp:
-            strFileName = tempfile.mktemp()
+            strFileName = tempfile.mktemp(suffix=strExt)
             file = open(strFileName, 'w')
             file.write(binData)
             file.close()
