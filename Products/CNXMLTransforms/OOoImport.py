@@ -97,6 +97,15 @@ class oo_to_cnxml:
             if len(strNewFileName) == 0:
                 zLOG.LOG("OOo2CNXML Transform", zLOG.INFO, "Failed to move BAD imported Word doc: %s" % strFileName)
 
+    def cleanup(self, strFileName):
+        # if we are not harvesting the import input file, we are operating on a copy in the temp directory,
+        # which needs to be removed after the import has completed.
+        bHarvestingOn = ( len(self.config['harvest_dir_success']) > 0 )
+        bSaveToTemp = not bHarvestingOn
+        if bSaveToTemp:
+            zLOG.LOG("OOo2CNXML Transform", zLOG.INFO, "Removing: %s" % strFileName)
+            os.remove(strFileName)
+
     def convertWordToOOo(self, strFileName):
         # quote the file name to prevent shell script expansion of any
         # special characters in the file name.
@@ -339,6 +348,8 @@ class oo_to_cnxml:
                     img = zipfileob.read(path)
                     objects[unmangled_name] = img
         outdata.setSubObjects(objects)
+
+        self.cleanup(strFileName)
 
         return outdata
 

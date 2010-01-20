@@ -89,6 +89,15 @@ class latex_to_folder:
             if len(strNewFileName) == 0:
                 zLOG.LOG("LaTeX2CNXML Transform", zLOG.INFO, "Failed to move BAD imported LaTeX doc: %s" % strFileName)
 
+    def cleanup(self, strFileName):
+        # if we are not harvesting the import input file, we are operating on a copy in the temp directory,
+        # which needs to be removed after the import has completed.
+        bHarvestingOn = ( len(self.config['harvest_dir_success']) > 0 )
+        bSaveToTemp = not bHarvestingOn
+        if bSaveToTemp:
+            zLOG.LOG("LaTeX2CNXML Transform", zLOG.INFO, "Removing: %s" % strFileName)
+            os.remove(strFileName)
+
     def convert(self, data, outdata, **kwargs):
         """Input is a zip file. Output is idata, with getData being index.cnxml and subObjects being other siblings."""
 
@@ -233,6 +242,8 @@ class latex_to_folder:
 
         # cleanup the temp working directory
         shutil.rmtree(strTempWorkingDirectory);
+
+        self.cleanup(strHarvestedFileName)
 
         return outdata
 
