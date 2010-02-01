@@ -1,6 +1,9 @@
-	- light-weight-branding (DATE)
-		- make latex importer work when harvesting is turned off. the temporary
-			file we create on the local FS must end '.zip'.  This change was made for Enterprise Rhaptos.
+CNXMLTransforms-0.15
+  - generic setup refactor. Rhaptos 2.0 release
+  - light-weight-branding
+  - make latex importer work when harvesting is turned off. the temporary
+    file we create on the local FS must end '.zip'.  This change was made
+    for Enterprise Rhaptos.
 
 CNXMLTransforms-0.14
   - collection-structure-redesign-1 (Oct. 22, 2009)
