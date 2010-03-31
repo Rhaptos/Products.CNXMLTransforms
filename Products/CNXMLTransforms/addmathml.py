@@ -1,10 +1,9 @@
-#!/usr/bin/env python2.3
+#!/usr/bin/env python
 #
-# addsectiontags - parse OpenOffice XML and add section tags based on
-# headings
+# addmathml - parse OpenOffice XML and add mathml after draw elements
 #
-# Author: Adan Galvan, Brent Hendricks
-# (C) 2005 Rice University
+# Author: Adan Galvan, Brent Hendricks, Ross Reedstrom
+# (C) 2005-2010 Rice University
 #
 # This software is subject to the provisions of the GNU Lesser General
 # Public License Version 2.1 (LGPL).  See LICENSE.txt for details.
@@ -24,7 +23,7 @@ class docHandler(ContentHandler):
     def __init__(self):
         #  on init, create links dictionary
         self.objOOoZipFile = u''
-        self.document = u''
+        self.document = []
         self.header_stack = []
         self.tableLevel = 0
         self.listLevel = 0
@@ -49,8 +48,8 @@ class docHandler(ContentHandler):
             strMathMLObjectLocation = strMathMLObjectName + '/content.xml'
 
             if strMathMLObjectName:
-                self.document = self.document + "<!-- embedded MathML for object: \'" + strMathMLObjectName + "\'. -->\n"
-                #self.document = self.document + "<!-- embedded MathML here from location: \'" + strMathMLObjectLocation + "\'. -->\n"
+                self.document.append("<!-- embedded MathML for object: \'" + strMathMLObjectName + "\'. -->\n")
+                #self.document.append("<!-- embedded MathML here from location: \'" + strMathMLObjectLocation + "\'. -->\n")
                 try:
                     strOOoMathML = self.objOOoZipFile.read(strMathMLObjectLocation)
                     if strOOoMathML:
@@ -58,15 +57,15 @@ class docHandler(ContentHandler):
                         if iXmlStart > 0:
                             strOOoMathMLWithoutHeader = strOOoMathML[iXmlStart:].decode('utf-8')
                             try:
-                                self.document = self.document + strOOoMathMLWithoutHeader
+                                self.document.append(strOOoMathMLWithoutHeader)
                             except:
-                                self.document = self.document + "<!-- adding to self.document failed. -->"
+                                self.document.append("<!-- adding to self.document failed. -->")
                         else:
-                            self.document = self.document + "<!-- strOOoMathML.find(\'<math:math \') returns 0. -->\n"
+                            self.document.append("<!-- strOOoMathML.find(\'<math:math \') returns 0. -->\n")
                     else:
-                        self.document = self.document + "<!-- self.objOOoZipFile.read(" + strMathMLObjectLocation + ") returns nothing. -->\n"
+                        self.document.append("<!-- self.objOOoZipFile.read(" + strMathMLObjectLocation + ") returns nothing. -->\n")
                 except:
-                    self.document = self.document + "<!-- self.objOOoZipFile.read(" + strMathMLObjectLocation + ") is unhappy. -->\n"
+                    self.document.append("<!-- self.objOOoZipFile.read(" + strMathMLObjectLocation + ") is unhappy. -->\n")
 
             self.outputEndElement(name)
 
@@ -78,14 +77,14 @@ class docHandler(ContentHandler):
             self.outputStartElement(name, attrs)
 
     def outputStartElement(self, name, attrs):
-        self.document = self.document + '<%s' % name
+        self.document.append('<%s' % name)
         if attrs:
             for attr, value in attrs.items():
-                self.document = self.document + " " + attr + '=%s' % quoteattr(value)
-        self.document = self.document + '>'
+                self.document.append(" " + attr + '=%s' % quoteattr(value))
+        self.document.append('>')
 
     def characters(self, ch):
-        self.document = self.document + escape(ch)
+        self.document.append(escape(ch))
 
     def endElement(self, name):
         handler = self.handlers.get(name, None)
@@ -121,10 +120,12 @@ def addMathML(fileXml, objOOoZipFile):
     # Parse the file; your handler's methods will get called
     parser.parse(fileXml)
 
-    return dh.document.encode('UTF-8')
+    return u''.join(dh.document).encode('UTF-8')
 
 
 if __name__ == "__main__":
+    import zipfile
     file = sys.argv[1]
     f = open(file)
-    print addMathML(f)
+    z = zipfile.ZipFile(sys.argv[2])
+    print addMathML(f,z)

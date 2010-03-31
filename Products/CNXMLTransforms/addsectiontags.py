@@ -1,10 +1,10 @@
-#!/usr/bin/env python2.3
+#!/usr/bin/env python
 #
 # addsectiontags - parse OpenOffice XML and add section tags based on
 # headings
 #
-# Author: Adan Galvan, Brent Hendricks
-# (C) 2005 Rice University
+# Author: Adan Galvan, Brent Hendricks, Ross Reedstrom
+# (C) 2005-2010 Rice University
 #
 # This software is subject to the provisions of the GNU Lesser General
 # Public License Version 2.1 (LGPL).  See LICENSE.txt for details.
@@ -22,7 +22,7 @@ class docHandler(ContentHandler):
 
     def __init__(self):
         #  on init, create links dictionary
-        self.document = u''
+        self.document = []
         self.header_stack = []
         self.tableLevel = 0
         self.listLevel = 0
@@ -64,11 +64,11 @@ class docHandler(ContentHandler):
         # text:section is hierarchical while text:h is not
  
         if not end_tag:
-            self.document = self.document + "<!-- close all open sections -->\n"
+            self.document.append("<!-- close all open sections -->\n")
             self.endSections()
             self.outputStartElement(name, attrs)
         else:
-            self.document = self.document + "<!-- close all open sections -->\n"
+            self.document.append("<!-- close all open sections -->\n")
             self.endSections()
             self.outputEndElement(name)
 
@@ -82,22 +82,22 @@ class docHandler(ContentHandler):
             self.endSections(level)
 
             id = attrs.get('id',self.generateId())
-            self.document = self.document + "<section id='%s'>\n" %id
-            self.document = self.document + "<name>"
+            self.document.append("<section id='%s'>\n" %id)
+            self.document.append("<name>")
         else:
-            self.document = self.document + "</name>"
+            self.document.append("</name>")
 
     def handleBody(self, name, end_tag, attrs={}):
         #head-> name
         if not end_tag:
-            self.document = self.document + '<office:body'
+            self.document.append('<office:body')
             if attrs:
                 for attr, value in attrs.items():
-                    self.document = self.document + " " + attr + '=%s' % quoteattr(value)
-            self.document = self.document + '>'
+                    self.document.append(' %s=%s' % (attr,quoteattr(value)))
+            self.document.append('>')
         else:
             self.endSections()
-            self.document = self.document + '</office:body>'
+            self.document.append('</office:body>')
 
     def startElement(self, name, attrs):
         handler = self.handlers.get(name, None)
@@ -107,14 +107,14 @@ class docHandler(ContentHandler):
             self.outputStartElement(name, attrs)
 
     def outputStartElement(self, name, attrs):
-        self.document = self.document + '<%s' % name
+        self.document.append('<%s' % name)
         if attrs:
             for attr, value in attrs.items():
-                self.document = self.document + " " + attr + '=%s' % quoteattr(value)
-        self.document = self.document + '>'
+                self.document.append(' %s=%s' % (attr,quoteattr(value)))
+        self.document.append('>')
 
     def characters(self, ch):
-        self.document = self.document + escape(ch)
+        self.document.append(escape(ch))
 
     def endElement(self, name):
         handler = self.handlers.get(name, None)
@@ -132,7 +132,7 @@ class docHandler(ContentHandler):
         stack that remembers the headers seen.
         """
 
-        # self.document = self.document + "<!-- storeSectionState(): " + str(len(self.header_stack)) + " open section tags. " + str(self.header_stack) + "-->\n"
+        # self.document.append("<!-- storeSectionState(): " + str(len(self.header_stack)) + " open section tags. " + str(self.header_stack) + "-->\n")
 
         try:
             # special case.  we are not processing an OOo XML start tag which we
@@ -177,7 +177,7 @@ class docHandler(ContentHandler):
         """Closes all sections of level >= sectnum. Defaults to closing all open sections"""
 
         iSectionsClosed = self.storeSectionState(level)
-        self.document = self.document + "</section>\n" * iSectionsClosed
+        self.document.append("</section>\n" * iSectionsClosed)
 
     def generateId(self):
         return 'id-' + str(random.random())[2:]
@@ -203,7 +203,7 @@ def addSectionTags(s):
     # Parse the file; your handler's methods will get called
     parser.parse(s)
 
-    return dh.document.encode('UTF-8')
+    return u''.join(dh.document).encode('UTF-8')
 
 if __name__ == "__main__":
     file = sys.argv[1]
