@@ -65,20 +65,8 @@ class sword_to_folder:
                 zLOG.LOG("Sword Transform", zLOG.INFO, "starting...")
                 mdml = XMLService.transform(unzipfile, SWORD2MDML_XSL)
                 zLOG.LOG("Sword Transform", zLOG.INFO, "mdml=%s" % mdml)
-                doc = XMLService.parseString(mdml)
-                zLOG.LOG("Sword Transform", zLOG.INFO, "doc=%s" % doc)
-                nsMapping = { "md": "http://cnx.rice.edu/mdml/0.4" }
-                ctxt = XMLService.createContext(doc, nsMapping)
-                zLOG.LOG("Sword Transform", zLOG.INFO, "ctxt=%s" % ctxt)
                 meta = outdata.getMetadata()
-                meta['title'] = XMLService.xpathString(ctxt, '//*[local-name()="title"]/text()')
-                meta['abstract'] = XMLService.xpathString(ctxt, '//*[local-name()="abstract"]/text()')
-
-                meta['keywords'] = []
-                for n in XMLService.xpathEval(ctxt, '//*[local-name()="keyword"]/text()'):
-                    meta['keywords'].append(XMLService.nodeValue(n))
-
-                zLOG.LOG("Sword Transform", zLOG.INFO, "mets.xml 2 mdml=%s" % mdml)
+                meta['mdml'] = mdml
             else:
                 # This is the word file
                 oo_to_cnxml().convert(unzipfile, outdata, **kwargs)
