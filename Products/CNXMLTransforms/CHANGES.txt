@@ -1,3 +1,5 @@
+  - performance of add*.py improved dramatically
+
 CNXMLTransforms-0.15
   - generic setup refactor. Rhaptos 2.0 release
   - light-weight-branding
