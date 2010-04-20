@@ -58,7 +58,6 @@ OO2OO_XSL = os.path.join(package_home(GLOBALS), 'www', 'oo2oo.xsl')
 ##OOCONVERT = os.path.join(package_home(GLOBALS), 'Extensions', 'ooconvert.py')
 OOCONVERT = os.getenv('OOCONVERT', os.path.join(package_home(GLOBALS), 'Extensions', 'ooconvert.py'))
 CNXMLTIDY_XSL = os.path.join(package_home(GLOBALS), 'www', 'cnxmltidy.xsl')
-SWORD2MDML_XSL = os.path.join(package_home(GLOBALS), 'www', 'sword2mdml.xsl')
 XSL_LOCATION = os.path.join(package_home(GLOBALS), 'www')
 
 class OOoImportError(Exception):
