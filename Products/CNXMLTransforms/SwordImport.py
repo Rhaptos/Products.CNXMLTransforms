@@ -13,7 +13,7 @@ Not certified for nested contents.
 
 NOTE: see OOoTransform header about compatibility with Archetypes fields.
 """
-
+import demjson as json
 from zipfile import ZipFile
 from StringIO import StringIO
 import os
@@ -22,7 +22,8 @@ import zLOG
 from Products.PortalTransforms.interfaces import itransform
 from Products.CNXMLTransforms.OOoImport import oo_to_cnxml
 from Products.CNXMLDocument import XMLService
-from helpers import SWORD2MDML_XSL
+from helpers import SWORD2RME_XSL
+from helpers import XML2JSON_XSL
 
 class sword_to_folder:
     """Transform zip file to RhaptosModuleEditor with contents."""
@@ -63,10 +64,12 @@ class sword_to_folder:
             unzipfile = zipfile.read(name)
             if modname == "mets.xml":
                 zLOG.LOG("Sword Transform", zLOG.INFO, "starting...")
-                mdml = XMLService.transform(unzipfile, SWORD2MDML_XSL)
-                zLOG.LOG("Sword Transform", zLOG.INFO, "mdml=%s" % mdml)
-                meta = outdata.getMetadata()
-                meta['mdml'] = mdml
+                simplified = XMLService.transform(unzipfile, SWORD2RME_XSL)
+                jsonstr = XMLService.transform(simplified, XML2JSON_XSL)
+                m = json.decode(jsonstr)
+                zLOG.LOG("Sword Transform", zLOG.INFO, "m=%s" % m)
+                outdata.setMetadata(m)
+                meta['properties'] = m
             else:
                 # This is the word file
                 oo_to_cnxml().convert(unzipfile, outdata, **kwargs)
