@@ -54,6 +54,7 @@ class sword_to_folder:
             lastslash = name.rfind("/")
             if lastslash != -1: prefix = name[:lastslash+1]
 
+        zLOG.LOG("Sword Transform", zLOG.INFO, "files in zip=%s" % namelist)
         for name in namelist:
             modname = name[len(prefix):]
             if not modname:               # some zip programs show directories by themselves
@@ -68,7 +69,7 @@ class sword_to_folder:
                 jsonstr = XMLService.transform(simplified, XML2JSON_XSL)
                 m = json.decode(jsonstr)
                 zLOG.LOG("Sword Transform", zLOG.INFO, "m=%s" % m)
-                outdata.setMetadata(m)
+                meta = outdata.getMetadata()
                 meta['properties'] = m
             else:
                 # This is the word file
@@ -84,4 +85,3 @@ class sword_to_folder:
         
 def register():
     return sword_to_folder()
-
