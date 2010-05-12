@@ -238,7 +238,7 @@
 	<xsl:variable name="arrayMember" select="preceding-sibling::*[name()=$name]"/>
 	<xsl:variable name="arrayTail" select="not(following-sibling::*[name()=$name])"/>
 	<xsl:variable name="arrayHead" select="not($arrayMember) and not($arrayTail)"/>
-<xsl:message>alsjdhaskjhd</xsl:message>
+
 	<xsl:if test="not($arrayMember) and (not(.=/*[1]) or $json.printroot) and not($skipKey)">
 	    <xsl:call-template name="json.escape.string">
 	      <xsl:with-param name="s">
