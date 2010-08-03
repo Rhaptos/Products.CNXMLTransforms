@@ -129,6 +129,10 @@ def _makeModuleViewZip(data, zipfile, containername=""):
         cnxml.setMetadata()
     module_file_name = 'index_auto_upgrade.cnxml'
     file_location = "%s%s" % (containername,module_file_name)
-    zipfile.writestr(file_location, str(cnxml))
+    if type(cnxml.data) == type(u''):
+        cdata = str(cnxml.data.encode('utf-8'))
+    else:
+        cdata = str(cnxml.data)
+    zipfile.writestr(file_location, cdata)
 
     return zipfile
