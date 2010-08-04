@@ -127,7 +127,7 @@ def _makeModuleViewZip(data, zipfile, containername=""):
     cnxml = data.getDefaultFile()
     if not cnxml.upgrade():
         cnxml.setMetadata()
-    module_file_name = 'index_auto_upgrade.cnxml'
+    module_file_name = 'index_auto_generated.cnxml'
     file_location = "%s%s" % (containername,module_file_name)
     if type(cnxml.data) == type(u''):
         cdata = str(cnxml.data.encode('utf-8'))
