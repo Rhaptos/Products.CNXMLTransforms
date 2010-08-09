@@ -121,9 +121,18 @@ def _makeModuleViewZip(data, zipfile, containername=""):
     for obj in fileNames:
         file = data.getFile(obj)
         path = "%s%s" % (containername, obj)
-        try:
-          zipfile.writestr(path, str(file))
-        except NoWrite:
-          pass
+        zipfile.writestr(path, str(file))
+
+    # Handle CNXML version upgrade
+    cnxml = data.getDefaultFile()
+    if not cnxml.upgrade():
+        cnxml.setMetadata()
+    module_file_name = 'index_auto_generated.cnxml'
+    file_location = "%s%s" % (containername,module_file_name)
+    if type(cnxml.data) == type(u''):
+        cdata = str(cnxml.data.encode('utf-8'))
+    else:
+        cdata = str(cnxml.data)
+    zipfile.writestr(file_location, cdata)
 
     return zipfile
