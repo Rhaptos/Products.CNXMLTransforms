@@ -1,3 +1,4 @@
+CNXMLTransforms-0.17
   - modify ZipExport/Import to provide/ignore auto_upgraded cnxml
 
 CNXMLTransforms-0.16
