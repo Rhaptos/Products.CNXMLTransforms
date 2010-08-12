@@ -19,7 +19,6 @@ from Products.CNXMLTransforms.AuthenticImport import authentic_to_cnxml
 from Products.CNXMLTransforms.XHTMLImport import xhtml_to_cnxml
 from Products.CNXMLTransforms.ZipImport import zip_to_folder
 from Products.CNXMLTransforms.LatexImport import latex_to_folder
-from Products.CNXMLTransforms.SwordImport import sword_to_folder
 #export
 from Products.CNXMLTransforms.AuthenticExport import cnxml_to_authentic
 from Products.CNXMLTransforms.ZipExport import folder_to_zip
@@ -37,7 +36,6 @@ transforms = (
      module_to_xhtmlzip(),
      zip_to_folder(),
      latex_to_folder(),
-     sword_to_folder(),
 )
 
 
