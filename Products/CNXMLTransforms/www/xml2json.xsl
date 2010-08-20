@@ -238,8 +238,14 @@
 	<xsl:variable name="arrayMember" select="preceding-sibling::*[name()=$name]"/>
 	<xsl:variable name="arrayTail" select="not(following-sibling::*[name()=$name])"/>
 	<xsl:variable name="arrayHead" select="not($arrayMember) and not($arrayTail)"/>
+	<!-- Check if the current node is the root node (for json.printroot)
+	       Unfortunately, .=/*[1] isn't enough. For example,
+	       "<a><b>c</b></a>" will have isRoot(b)=true 
+	       but this only happens if <a> has only one child.
+	 -->
+    <xsl:variable name="isRoot" select="generate-id(.)=generate-id(/*[1])"/>
 
-	<xsl:if test="not($arrayMember) and (not(.=/*[1]) or $json.printroot) and not($skipKey)">
+	<xsl:if test="not($arrayMember) and (not($isRoot) or $json.printroot) and not($skipKey)">
 	    <xsl:call-template name="json.escape.string">
 	      <xsl:with-param name="s">
 	      	<xsl:call-template name="json.convert.intern.name"/>
