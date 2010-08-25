@@ -23,6 +23,7 @@ from Products.PortalTransforms.interfaces import itransform
 from Products.CNXMLTransforms.OOoImport import oo_to_cnxml
 from Products.CNXMLDocument import XMLService
 from helpers import SWORD2RME_XSL
+from helpers import SWORD_INSERT_ATTRIBUTION_XSL
 from helpers import XML2JSON_XSL
 
 class sword_to_folder:
@@ -79,9 +80,24 @@ class sword_to_folder:
         fakefile.close()
 
         meta = outdata.getMetadata()
+        
+        # Add attribution note to the cnxml
+        props = meta['properties']
+        kwargs = {}
+        for key in ('journal', 'year', 'url'):
+          if unicode(key) in props:
+            kwargs[key] = props[unicode(key)]
+        
+        zLOG.LOG("Sword Transform", zLOG.INFO, "attribution dict=%s" % kwargs)
+        data = outdata.getData()
+        if len(data) > 0:
+          attributed = XMLService.transform(data, SWORD_INSERT_ATTRIBUTION_XSL, **kwargs)
+          outdata.setData(StringIO(attributed))
+        
         #meta['subdirs'] = subdirs.keys()
 
         return outdata
         
 def register():
     return sword_to_folder()
+
