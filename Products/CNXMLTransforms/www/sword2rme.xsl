@@ -33,7 +33,7 @@
 
 	<!-- Hacked so we get a JSON array named "import_authors" -->
 	<xsl:template match="bib:author">
-		<import_authors>
+		<import_authors><?json.force-array?>
 			<xsl:apply-templates select="@*|node()" />
 		</import_authors>
 	</xsl:template>
@@ -42,8 +42,8 @@
 	<xsl:template match="/">
 		<metadata>
 			<xsl:apply-templates select="@*|node()" />
-                        <!-- The editor object has a boolean flag for whether or not the module was imported (to show additional messages to the user) -->
-                        <is_imported>true</is_imported>
+			<!-- The editor object has a boolean flag for whether or not the module was imported (to show additional messages to the user) -->
+			<is_imported>true</is_imported>
 		</metadata>
 	</xsl:template>
 

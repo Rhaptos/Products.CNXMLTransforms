@@ -169,7 +169,7 @@
 
 
   <!-- ignore document text -->
-  <xsl:template mode="json" match="text()[../@* or preceding-sibling::node() or following-sibling::node()]">
+  <xsl:template mode="json" match="text()[../@* or preceding-sibling::* or following-sibling::*]">
   	<!-- Uniquely identify the text node key. Otherwise, it's invalid JSON -->
   	<xsl:variable name="textkey">
   		<xsl:value-of select="$json.textkey"/>
@@ -184,7 +184,7 @@
     <xsl:call-template name="json.escape.string">
       <xsl:with-param name="s" select="."/>
     </xsl:call-template>
-    <xsl:if test="following-sibling::node()">
+    <xsl:if test="following-sibling::*">
     	<xsl:text>,</xsl:text>
     </xsl:if>
   </xsl:template>
@@ -235,9 +235,10 @@
 	<xsl:param name="skipKey" select="false()"/>
 	<!-- Store the element name, to decide if it's in an array -->
 	<xsl:variable name="name" select="name()"/>
-	<xsl:variable name="arrayMember" select="preceding-sibling::*[name()=$name]"/>
-	<xsl:variable name="arrayTail" select="not(following-sibling::*[name()=$name])"/>
-	<xsl:variable name="arrayHead" select="not($arrayMember) and not($arrayTail)"/>
+    <xsl:variable name="forceArray" select="processing-instruction('json.force-array') and not(preceding-sibling::*[name()=$name] or following-sibling::*[name()=$name])"/>
+    <xsl:variable name="arrayMember" select="preceding-sibling::*[name()=$name]"/>
+    <xsl:variable name="arrayTail" select="not(following-sibling::*[name()=$name]) or $forceArray"/>
+    <xsl:variable name="arrayHead" select="not($arrayMember) and not($arrayTail) or $forceArray"/>
 	<!-- Check if the current node is the root node (for json.printroot)
 	       Unfortunately, .=/*[1] isn't enough. For example,
 	       "<a><b>c</b></a>" will have isRoot(b)=true 
@@ -267,7 +268,7 @@
 		<xsl:text>{</xsl:text>
 	</xsl:if>
 	<!-- Write out @* -->
-	<xsl:variable name="hasChildren" select="count(node())>0"/>
+	<xsl:variable name="hasChildren" select="count(*|text())>0"/>
 	<xsl:for-each select="@*">
 		<xsl:apply-templates select="."/>
 		<xsl:if test="position()!=last() or $hasChildren">
