@@ -91,7 +91,7 @@ class sword_to_folder:
         zLOG.LOG("Sword Transform", zLOG.INFO, "attribution dict=%s" % kwargs)
         data = outdata.getData()
         if data and len(data.getvalue()) > 0:
-          attributed = XMLService.transform(data, SWORD_INSERT_ATTRIBUTION_XSL, **kwargs)
+          attributed = XMLService.transform(data.getvalue(), SWORD_INSERT_ATTRIBUTION_XSL, **kwargs)
           outdata.setData(StringIO(attributed))
         
         #meta['subdirs'] = subdirs.keys()
