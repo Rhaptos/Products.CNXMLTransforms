@@ -31,9 +31,15 @@
 		</xsl:element>
 	</xsl:template>
 
+        <xsl:template match="bib:keywords">
+            <keywords><xsl:processing-instruction name="json.force-array"/>
+                <xsl:apply-templates select="@*|node()" />
+            </keywords>
+        </xsl:template>
+
 	<!-- Hacked so we get a JSON array named "import_authors" -->
 	<xsl:template match="bib:author">
-		<import_authors><?json.force-array?>
+		<import_authors><xsl:processing-instruction name="json.force-array"/>
 			<xsl:apply-templates select="@*|node()" />
 		</import_authors>
 	</xsl:template>
