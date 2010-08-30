@@ -40,7 +40,7 @@
 <!-- Identity transform for all other nodes -->
 <xsl:template match="@*|node()">
     <xsl:copy>
-        <xsl:apply-templates select="node()"/>
+        <xsl:apply-templates select="@*|node()"/>
     </xsl:copy>
 </xsl:template>
 
