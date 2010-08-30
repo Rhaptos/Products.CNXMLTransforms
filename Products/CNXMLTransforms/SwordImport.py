@@ -69,7 +69,6 @@ class sword_to_folder:
                 simplified = XMLService.transform(unzipfile, SWORD2RME_XSL)
                 jsonstr = XMLService.transform(simplified, XML2JSON_XSL)
                 m = json.decode(jsonstr)
-                zLOG.LOG("Sword Transform", zLOG.INFO, "m=%s" % m)
                 meta = outdata.getMetadata()
                 meta['properties'] = m
             else:
@@ -92,7 +91,9 @@ class sword_to_folder:
         data = outdata.getData()
         if data and len(data.getvalue()) > 0:
           attributed = XMLService.transform(data.getvalue(), SWORD_INSERT_ATTRIBUTION_XSL, **kwargs)
-          outdata.setData(StringIO(attributed))
+          outdata.setData(StringIO(unicode(attributed,'utf-8')))
+        else:
+          zLOG.LOG("Sword Transform", zLOG.INFO, "Skipping adding attributions because no cnxml was generated...")
         
         #meta['subdirs'] = subdirs.keys()
 
