@@ -6,6 +6,7 @@
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:c="http://cnx.rice.edu/cnxml"
+    xmlns="http://cnx.rice.edu/cnxml"
     >
 <xsl:param name="url"/>
 <xsl:param name="journal"/>
@@ -16,9 +17,9 @@
     <xsl:copy>
         <xsl:apply-templates select="@*|node()"/>
         <xsl:if test="$url != ''">
-            <c:note>
+            <note>
                 <xsl:text>This article originally appeared in </xsl:text>
-                <c:link url="$url">
+                <link url="{$url}">
                     <xsl:choose>
                         <xsl:when test="$journal != ''">
                             <xsl:value-of select="$journal"/>
@@ -27,12 +28,12 @@
                             <xsl:value-of select="$url"/>
                         </xsl:otherwise>
                     </xsl:choose>
-                </c:link>
+                </link>
                 <xsl:if test="$year != ''">
                     <xsl:text>, </xsl:text>
                 </xsl:if>
                 <xsl:value-of select="$year"/>
-            </c:note>
+            </note>
         </xsl:if>
     </xsl:copy>
 </xsl:template>

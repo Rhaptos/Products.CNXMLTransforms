@@ -82,15 +82,18 @@ class sword_to_folder:
         
         # Add attribution note to the cnxml
         props = meta['properties']
-        kwargs = {}
+        params = {}
         for key in ('journal', 'year', 'url'):
           if unicode(key) in props:
-            kwargs[key] = props[unicode(key)]
+            value = props[unicode(key)]
+            if isinstance(value, unicode):
+              value = value.encode('utf-8')
+            params[key] = value
         
-        zLOG.LOG("Sword Transform", zLOG.INFO, "attribution dict=%s" % kwargs)
+        zLOG.LOG("Sword Transform", zLOG.INFO, "attribution dict=%s" % params)
         data = outdata.getData()
         if data and len(data.getvalue()) > 0:
-          attributed = XMLService.transform(data.getvalue(), SWORD_INSERT_ATTRIBUTION_XSL, **kwargs)
+          attributed = XMLService.transform(data.getvalue(), SWORD_INSERT_ATTRIBUTION_XSL, **params)
           outdata.setData(StringIO(unicode(attributed,'utf-8')))
         else:
           zLOG.LOG("Sword Transform", zLOG.INFO, "Skipping adding attributions because no cnxml was generated...")
