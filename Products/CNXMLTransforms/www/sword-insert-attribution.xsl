@@ -23,7 +23,7 @@
                 <xsl:value-of select="$url"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:text>Another source</xsl:text>
+                <xsl:text>another source</xsl:text>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:variable>
