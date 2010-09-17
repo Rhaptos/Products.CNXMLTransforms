@@ -14,38 +14,27 @@
 
 <!-- Insert a note at the end of the cnxml -->
 <xsl:template match="c:content">
-    <xsl:variable name="title">
-        <xsl:choose>
-            <xsl:when test="$journal != ''">
-                <xsl:value-of select="$journal"/>
-            </xsl:when>
-            <xsl:when test="$url != ''">
-                <xsl:value-of select="$url"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:text>another source</xsl:text>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:variable>
     <xsl:copy>
         <xsl:apply-templates select="@*|node()"/>
-        <note>
-            <xsl:text>This article originally appeared in </xsl:text>
-            <xsl:choose>
-                <xsl:when test="$url != ''">
-                    <link url="{$url}">
-                        <xsl:value-of select="$title"/>
-                    </link>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="$title"/>
-                </xsl:otherwise>
-            </xsl:choose>
-            <xsl:if test="$year != ''">
-                <xsl:text>, </xsl:text>
-            </xsl:if>
-            <xsl:value-of select="$year"/>
-        </note>
+        <xsl:if test="$url != '' or $journal != '' or $year != ''">
+	        <note>
+	            <xsl:text>This article originally appeared in </xsl:text>
+	            <xsl:choose>
+	                <xsl:when test="$url != ''">
+	                    <link url="{$url}">
+	                        <xsl:value-of select="$journal"/>
+	                    </link>
+	                </xsl:when>
+	                <xsl:otherwise>
+	                    <xsl:value-of select="$journal"/>
+	                </xsl:otherwise>
+	            </xsl:choose>
+	            <xsl:if test="$year != ''">
+	                <xsl:text>, </xsl:text>
+	            </xsl:if>
+	            <xsl:value-of select="$year"/>
+	        </note>
+	    </xsl:if>
     </xsl:copy>
 </xsl:template>
 

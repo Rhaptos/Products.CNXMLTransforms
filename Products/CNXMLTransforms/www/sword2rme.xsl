@@ -22,6 +22,7 @@
 	</xsl:template>
 
 	<xsl:template match="bib:entry">
+                <has_attribution_note>true</has_attribution_note>
 		<xsl:apply-templates select="@*|node()" />
 	</xsl:template>
 
