@@ -22,6 +22,9 @@
 	            <xsl:choose>
 	                <xsl:when test="$url != ''">
 	                    <link url="{$url}">
+	                        <xsl:if test="not($journal)">
+	                            <xsl:value-of select="$url"/>
+	                        </xsl:if>
 	                        <xsl:value-of select="$journal"/>
 	                    </link>
 	                </xsl:when>
