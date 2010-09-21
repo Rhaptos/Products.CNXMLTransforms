@@ -58,6 +58,11 @@ OO2OO_XSL = os.path.join(package_home(GLOBALS), 'www', 'oo2oo.xsl')
 ##OOCONVERT = os.path.join(package_home(GLOBALS), 'Extensions', 'ooconvert.py')
 OOCONVERT = os.getenv('OOCONVERT', os.path.join(package_home(GLOBALS), 'Extensions', 'ooconvert.py'))
 CNXMLTIDY_XSL = os.path.join(package_home(GLOBALS), 'www', 'cnxmltidy.xsl')
+SWORD2RME_XSL = os.path.join(package_home(GLOBALS), 'www', 'sword2rme.xsl')
+SWORD_INSERT_ATTRIBUTION_XSL = os.path.join(package_home(GLOBALS), 'www', 'sword-insert-attribution.xsl')
+XML2JSON_XSL = os.path.join(package_home(GLOBALS), 'www', 'xml2json.xsl')
+CNXML2JSON_XSL = os.path.join(package_home(GLOBALS), 'www', 'cnxml2json.xsl')
+MDML2JSON_XSL = os.path.join(package_home(GLOBALS), 'www', 'mdml2json.xsl')
 XSL_LOCATION = os.path.join(package_home(GLOBALS), 'www')
 
 class OOoImportError(Exception):
@@ -399,3 +404,4 @@ UNICODE_DICTIONARY = {
   , "&#xF0DD;":"&#8657;"
   , "&#xF0DE;":"&#8658;"
 }
+
