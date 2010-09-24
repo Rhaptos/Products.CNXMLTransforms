@@ -1,3 +1,6 @@
+CNXMLTransforms-0.18
+  - sword import support
+
 CNXMLTransforms-0.17
   - modify ZipExport/Import to provide/ignore auto_upgraded cnxml
 
