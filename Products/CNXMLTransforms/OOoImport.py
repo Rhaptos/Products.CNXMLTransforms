@@ -25,7 +25,7 @@ import zLOG
 from Products.PortalTransforms.interfaces import itransform
 # from Products.CMFCore.utils import getToolByName
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from Products.CMFCore.CMFCorePermissions import View, ManagePortal
+from Products.CMFCore.permissions import View, ManagePortal
 
 from Products.CNXMLDocument import XMLService
 from Products.CNXMLDocument.CNXMLFile import autoIds
