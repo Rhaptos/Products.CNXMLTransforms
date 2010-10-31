@@ -17,8 +17,10 @@ import demjson as json
 from zipfile import ZipFile
 from StringIO import StringIO
 import os
-import zLOG
 
+from zope.interface import implements
+
+import zLOG
 from Products.PortalTransforms.interfaces import itransform
 from Products.CNXMLTransforms.OOoImport import oo_to_cnxml
 from Products.CNXMLDocument import XMLService
@@ -28,7 +30,7 @@ from helpers import XML2JSON_XSL
 
 class sword_to_folder:
     """Transform zip file to RhaptosModuleEditor with contents."""
-    __implements__ = itransform
+    implements(itransform)
     
     __name__ = "sword_to_folder"
     inputs  = ("application/zip",)

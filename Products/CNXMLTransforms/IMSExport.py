@@ -14,6 +14,7 @@ NOTE: we could also do this for courses.
 
 NOTE: currently packages CNXML. HTML would be good. Need an XHTMLExport first.
 """
+from zope.interface import implements
 
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 
@@ -30,7 +31,7 @@ IDENTIFIER = "Rhaptos-Module-%s"
 
 class folder_to_ims:
     """Transform RhaptosModuleEditor (or any other portal-folderish object!) to Zip file of its contents."""
-    __implements__ = itransform
+    implements(itransform)
     
     __name__ = "folder_to_ims"
     inputs  = ("application/cmf+folderish",)

@@ -20,6 +20,8 @@ import os
 from StringIO import StringIO
 import re
 
+from zope.interface import implements
+
 import zLOG
 # import AccessControl
 from Products.PortalTransforms.interfaces import itransform
@@ -40,7 +42,7 @@ import urllib
 
 class oo_to_cnxml:
     """Transform OOo Writer or MS Word documents into CNXML and associated embedded images."""
-    __implements__ = itransform
+    implements(itransform)
 
     __name__ = "oo_to_cnxml"
     inputs  = ("application/msword", "application/vnd.sun.xml.writer")   # for OOo 2.0:  application/vnd.oasis.opendocument.text  

@@ -25,6 +25,8 @@ import glob
 import re
 from PIL import Image
 
+from zope.interface import implements
+
 from helpers import OOoImportError, harvestImportFile, moveImportFile, XSL_LOCATION
 from Products.CNXMLDocument.CNXMLFile import CNXML_AUTOID_XSL
 
@@ -32,7 +34,7 @@ from Products.PortalTransforms.interfaces import itransform
 
 class latex_to_folder:
     """Transform zip file of LaTeX document to RhaptosModuleEditor with contents."""
-    __implements__ = itransform
+    implements(itransform)
 
     __name__ = "latex_to_folder"
     inputs  = ("application/zip+latex",)

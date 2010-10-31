@@ -17,6 +17,8 @@ Not recursive! Only deals with one level.
 from zipfile import ZipFile, ZIP_DEFLATED
 from StringIO import StringIO
 
+from zope.interface import implements
+
 from Products.PortalTransforms.interfaces import itransform
 from Products.RhaptosModuleStorage.ModuleView import ModuleView
 from Products.CMFCore.utils import getToolByName
@@ -27,7 +29,7 @@ def log(msg, severity=zLOG.INFO):
 
 class folder_to_zip:
     """Transform RhaptosModuleEditor (or any other portal-folderish object!) to Zip file of its contents."""
-    __implements__ = itransform
+    implements(itransform)
 
     __name__ = "folder_to_zip"
     inputs  = ("application/cmf+folderish",)

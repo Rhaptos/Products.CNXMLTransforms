@@ -7,6 +7,8 @@ viewing. There will be no sub objects (getSubObjects).
 
 Set parameter to choose an alternate stylesheet supplier.
 """
+from zope.interface import implements
+
 from Products.CMFCore.utils import getToolByName
 from Products.PortalTransforms.interfaces import itransform
 
@@ -36,7 +38,7 @@ def getStyles():
 
 class module_to_xhtmlzip:
     """Transform CNXML into Authentic CNXML."""
-    __implements__ = itransform
+    implements(itransform)
     
     __name__ = "module_to_xhtmlzip"
     inputs  = ("application/cmf+folderish",)

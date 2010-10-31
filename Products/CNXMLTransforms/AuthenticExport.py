@@ -7,6 +7,7 @@ input is XML, no images are expected.
 
 NOTE: see OOoTransform header about compatibility with Archetypes fields.
 """
+from zope.interface import implements
 
 from Products.PortalTransforms.interfaces import itransform
 
@@ -16,7 +17,7 @@ from config import CNXML_MIME
 
 class cnxml_to_authentic:
     """Transform CNXML into Authentic CNXML."""
-    __implements__ = itransform
+    implements(itransform)
     
     __name__ = "cnxml_to_authentic"
     inputs  = (CNXML_MIME,)

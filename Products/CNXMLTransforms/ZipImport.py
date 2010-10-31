@@ -19,6 +19,7 @@ Not certified for nested contents.
 
 NOTE: see OOoTransform header about compatibility with Archetypes fields.
 """
+from zope.interface import implements
 
 from zipfile import ZipFile
 from StringIO import StringIO
@@ -28,7 +29,7 @@ from Products.PortalTransforms.interfaces import itransform
 
 class zip_to_folder:
     """Transform zip file to RhaptosModuleEditor with contents."""
-    __implements__ = itransform
+    implements(itransform)
     
     __name__ = "zip_to_folder"
     inputs  = ("application/zip",)
