@@ -308,7 +308,7 @@ class oo_to_cnxml:
 
         try:
             fileOOo = StringIO(binOOoData)
-            zipfileob = zipfile.ZipFile(fileOOo, 'rb')
+            zipfileob = zipfile.ZipFile(fileOOo, 'r')
         except zipfile.BadZipfile:
             zLOG.LOG("OOo2CNXML Transform", zLOG.INFO, "Open Office returns something besides the expected zip file.")
             # don't know for sure if the conversion failed, so we leave
