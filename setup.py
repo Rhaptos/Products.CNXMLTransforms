@@ -27,6 +27,10 @@ setup(name='Products.CNXMLTransforms',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'Products.RhaptosContent',
+          'Products.CNXMLDocument',
+          # XXX Circular dependency
+          'Products.RhaptosModuleStorage',
       ],
       tests_require = [
            'zope.testing>=3.5',
