@@ -71,7 +71,7 @@ class sword_to_folder:
             if modname == "mets.xml":
                 # Write metadata
                 zLOG.LOG("Sword Transform", zLOG.INFO, "starting...")
-                simplified = XMLService.transform(unzipfile, SWORD2RME_XSL)
+                simplified = XMLService.transform(unzipfile, SWORD2RME_XSL)                
                 jsonstr = XMLService.transform(simplified, XML2JSON_XSL)
                 m = json.decode(jsonstr)
                 meta['properties'] = m
