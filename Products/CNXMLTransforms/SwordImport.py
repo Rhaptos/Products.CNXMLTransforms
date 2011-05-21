@@ -54,33 +54,44 @@ class sword_to_folder:
             name = namelist[0]
             lastslash = name.rfind("/")
             if lastslash != -1: prefix = name[:lastslash+1]
+        namelist = [name[len(prefix):] for name in namelist] # Strip prefix from namelist entries
 
         zLOG.LOG("Sword Transform", zLOG.INFO, "files in zip=%s" % namelist)
         meta = outdata.getMetadata()
         meta['properties'] = {}
-        for name in namelist:
-            modname = name[len(prefix):]
+        objects = {}
+        containsIndexCnxml = ('index.cnxml' in namelist)
+        for modname in namelist:
             if not modname:               # some zip programs show directories by themselves
               continue
             isubdir = modname.find('/')
             if isubdir != -1:             # subdirs, incl. especially 'stylesheets', not imported
               continue
-            unzipfile = zipfile.read(name)
+            unzipfile = zipfile.read(prefix + modname)
             if modname == "mets.xml":
+                # Write metadata
                 zLOG.LOG("Sword Transform", zLOG.INFO, "starting...")
                 simplified = XMLService.transform(unzipfile, SWORD2RME_XSL)
                 jsonstr = XMLService.transform(simplified, XML2JSON_XSL)
                 m = json.decode(jsonstr)
                 meta['properties'] = m
+            elif modname == "index.cnxml":
+                if unzipfile:
+                    outdata.setData(StringIO(unzipfile))
             else:
-                # This is the word file
-                oo_to_cnxml().convert(unzipfile, outdata, **kwargs)
+                extensionStart = modname.rfind('.')
+                if not containsIndexCnxml and (extensionStart != -1) and \
+                   (modname[extensionStart+1:] in ['odt','sxw','docx','rtf','doc']):
+                    # This is a word file
+                    oo_to_cnxml().convert(unzipfile, outdata, **kwargs)
+                else:
+                    objects[modname] = unzipfile
 
         zipfile.close()
         fakefile.close()
 
         meta = outdata.getMetadata()
-        
+
         # Add attribution note to the cnxml
         props = meta['properties']
         params = {}
@@ -93,6 +104,7 @@ class sword_to_folder:
         
         zLOG.LOG("Sword Transform", zLOG.INFO, "attribution dict=%s" % params)
         data = outdata.getData()
+
         if data and len(data.getvalue()) > 0:
           attributed = XMLService.transform(data.getvalue(), SWORD_INSERT_ATTRIBUTION_XSL, **params)
           outdata.setData(StringIO(unicode(attributed,'utf-8')))
@@ -101,6 +113,8 @@ class sword_to_folder:
         
         #meta['subdirs'] = subdirs.keys()
 
+        outdata.setSubObjects(objects)
+        
         return outdata
         
 def register():
