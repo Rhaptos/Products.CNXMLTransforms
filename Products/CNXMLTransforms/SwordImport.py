@@ -29,11 +29,11 @@ from helpers import XML2JSON_XSL
 class sword_to_folder:
     """Transform zip file to RhaptosModuleEditor with contents."""
     __implements__ = itransform
-    
+
     __name__ = "sword_to_folder"
     inputs  = ("application/zip",)
     output = "application/cmf+folderish"
-    
+
     def name(self):
         return self.__name__
 
@@ -41,7 +41,7 @@ class sword_to_folder:
         """Input is a zip file. Output is idata, with getData being index.cnxml and subObjects being other siblings."""
         fakefile = StringIO(data)
         zipfile = ZipFile(fakefile, 'r')
-        
+
         prefix = ''
         namelist = zipfile.namelist()
         lenlist = len(namelist)
@@ -80,7 +80,7 @@ class sword_to_folder:
         fakefile.close()
 
         meta = outdata.getMetadata()
-        
+
         # Add attribution note to the cnxml
         props = meta['properties']
         params = {}
@@ -90,7 +90,7 @@ class sword_to_folder:
             if isinstance(value, unicode):
               value = value.encode('utf-8')
             params[key] = value
-        
+
         zLOG.LOG("Sword Transform", zLOG.INFO, "attribution dict=%s" % params)
         data = outdata.getData()
         if data and len(data.getvalue()) > 0:
@@ -98,11 +98,11 @@ class sword_to_folder:
           outdata.setData(StringIO(unicode(attributed,'utf-8')))
         else:
           zLOG.LOG("Sword Transform", zLOG.INFO, "Skipping adding attributions because no cnxml was generated...")
-        
+
         #meta['subdirs'] = subdirs.keys()
 
         return outdata
-        
+
 def register():
     return sword_to_folder()
 
