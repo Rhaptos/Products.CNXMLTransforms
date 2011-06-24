@@ -8,9 +8,9 @@
     xmlns:c="http://cnx.rice.edu/cnxml"
     xmlns="http://cnx.rice.edu/cnxml"
     >
-<xsl:param name="url"/>
-<xsl:param name="journal"/>
-<xsl:param name="year"/>
+<xsl:param name="url" select="''"/>
+<xsl:param name="journal" select="''"/>
+<xsl:param name="year" select="''"/>
 
 <!-- Insert a note at the end of the cnxml -->
 <xsl:template match="c:content">

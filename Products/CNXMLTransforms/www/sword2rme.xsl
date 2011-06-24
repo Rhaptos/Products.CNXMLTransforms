@@ -12,6 +12,14 @@
 	<!-- Skip all values except the ones we care about -->
 	<xsl:template match="epdcx:valueString" />
 
+	<xsl:template match="epdcx:statement[@epdcx:propertyURI='http://purl.org/dc/elements/1.1/title']">
+	  <title><xsl:value-of select="epdcx:valueString/text()" /></title>
+	</xsl:template>
+
+	<xsl:template match="epdcx:statement[@epdcx:propertyURI='http://purl.org/dc/terms/abstract']">
+	  <abstract><xsl:value-of select="epdcx:valueString/text()" /></abstract>
+	</xsl:template>
+
 	<xsl:template match="epdcx:statement[@epdcx:propertyURI='http://purl.org/dc/elements/1.1/language']">
 		<language><xsl:value-of select="epdcx:valueString/text()" /></language>
 	</xsl:template>
@@ -31,6 +39,8 @@
 			<xsl:apply-templates select="@*|node()" />
 		</xsl:element>
 	</xsl:template>
+
+        <xsl:template match="bib:title|bib:abstract"/>
 
         <xsl:template match="bib:keywords">
             <keywords><xsl:processing-instruction name="json.force-array"/>
