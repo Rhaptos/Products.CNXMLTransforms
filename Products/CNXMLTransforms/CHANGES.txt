@@ -1,3 +1,6 @@
+CNXMLTransforms-0.19
+  - extend sword import support, additional atompub support
+
 CNXMLTransforms-0.18
   - sword import support
 
