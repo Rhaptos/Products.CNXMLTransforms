@@ -113,7 +113,7 @@ class sword_to_folder:
 
         #meta['subdirs'] = subdirs.keys()
 
-        outdata.setSubObjects(objects)
+        #outdata.setSubObjects(objects)
 
         return outdata
 
