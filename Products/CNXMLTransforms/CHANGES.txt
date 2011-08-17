@@ -1,3 +1,6 @@
+CNXMLTransforms-0.20
+  - added trustedzip import
+
 CNXMLTransforms-0.19
   - extend sword import support, additional atompub support
 
