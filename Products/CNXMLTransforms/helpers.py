@@ -72,6 +72,14 @@ class OOoImportError(Exception):
     scripts can use it when it comes from 'doTransform'. See __init__.py.
     """
     pass
+    
+class GDocsImportError(Exception):
+    """Special exception type to bear information about Google Docs import problems."""
+    pass
+    
+class HTMLSoupImportError(Exception):
+    """Special exception type to bear information about Google Docs import problems."""
+    pass
 
 def symbolReplace(text, dict):
     for key, value in dict.items():

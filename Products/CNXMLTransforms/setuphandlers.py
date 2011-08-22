@@ -20,6 +20,11 @@ from Products.CNXMLTransforms.XHTMLImport import xhtml_to_cnxml
 from Products.CNXMLTransforms.ZipImport import zip_to_folder
 from Products.CNXMLTransforms.LatexImport import latex_to_folder
 from Products.CNXMLTransforms.SwordImport import sword_to_folder
+from Products.CNXMLTransforms.GDocsURLImport import gdocs_url_to_cnxml
+from Products.CNXMLTransforms.GDocsIDImport import gdocs_id_to_cnxml
+from Products.CNXMLTransforms.GDocsFileImport import gdocs_file_to_cnxml
+from Products.CNXMLTransforms.HTMLSoupURLImport import htmlsoup_url_to_cnxml
+from Products.CNXMLTransforms.HTMLSoupFileImport import htmlsoup_file_to_cnxml
 #export
 from Products.CNXMLTransforms.AuthenticExport import cnxml_to_authentic
 from Products.CNXMLTransforms.ZipExport import folder_to_zip
@@ -38,6 +43,11 @@ transforms = (
      zip_to_folder(),
      latex_to_folder(),
      sword_to_folder(),
+     gdocs_url_to_cnxml(),
+     gdocs_id_to_cnxml(),
+     gdocs_file_to_cnxml(),
+     htmlsoup_url_to_cnxml(),
+     htmlsoup_file_to_cnxml(),
 )
 
 
@@ -90,8 +100,9 @@ def uninstall_transforms(portal, logger):
 def install(context):
     """Add transforms and associated mimetypes"""
 
-    if context.readDataFile('cnxmltransforms-install.txt') is None:
-        return
+    # Marvin Reimer: Why do I need to comment this out?
+    #if context.readDataFile('cnxmltransforms-install.txt') is None:
+    #    return
 
     logger = context.getLogger('cnxmltransforms-install')
 
