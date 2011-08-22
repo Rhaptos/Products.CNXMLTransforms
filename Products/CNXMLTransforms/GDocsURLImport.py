@@ -47,11 +47,12 @@ class gdocs_url_to_cnxml:
         strHtml = gdClient.get_file_content(strEntryUrl) # , auth_sub_token
 
         # MAIN Transformation of Google Docs HTML to CNXML
-        strCnxml = gdocs_to_cnxml(strHtml)
+        objects = {}
+        strCnxml, objects = gdocs_to_cnxml(strHtml, bDownloadImages=True)
 
         outdata.setData(strCnxml)
+        outdata.setSubObjects(objects)
 
-        # TODO: outdata.setSubObjects(objects)
         return outdata
 
 def register():

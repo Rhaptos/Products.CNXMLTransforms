@@ -2,7 +2,7 @@
 import sys
 import os
 import urllib2
-from urlparse import urlparse
+#from urlparse import urlparse
 import subprocess
 from Globals import package_home
 import libxml2
@@ -63,8 +63,8 @@ def tex2mathml(xml):
     return xml
 
 # Get the filename without extension form a URL
-def getNameFromUrl(s):
-    return os.path.splitext(urllib2.unquote(os.path.basename(urlparse(s).path)))[0]
+#def getNameFromUrl(s):
+#    return os.path.splitext(urllib2.unquote(os.path.basename(urlparse(s).path)))[0]
 
 # Downloads images from Google Docs and sets metadata for further processing
 def downloadImages(xml):
@@ -88,7 +88,7 @@ def downloadImages(xml):
                 strImageName += '.gif'
             strAlt = image.get('alt')
             if not strAlt:
-                image.set('alt', getNameFromUrl(strImageUrl))
+                image.set('alt', strImageUrl) # getNameFromUrl(strImageUrl))
             image.text = strImageName
             # add contents of image to object
             objects[strImageName] = strImageContent

@@ -5,7 +5,7 @@ Transform GDocs to CNXML from file.
 
 import zLOG
 from Products.PortalTransforms.interfaces import itransform
-from gdocs2cnxml import gdocs_to_cnxml as gdocsConverter
+from gdocs2cnxml import gdocs_to_cnxml
 from config import CNXML_MIME
 from helpers import GDocsImportError
 
@@ -21,7 +21,7 @@ class gdocs_file_to_cnxml:
         return self.__name__
 
     def convert(self, data, outdata, **kwargs):
-        text = gdocsConverter(data)
+        text = gdocs_to_cnxml(data)
         outdata.setData(text)
         # nothing to do for outdata.setSubObjects(objects)
         return outdata
