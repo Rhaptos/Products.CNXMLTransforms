@@ -42,7 +42,7 @@ def tidy_and_premail(content):
     return strTidiedPremailedHtml
 
 # Main method. Doing all steps for the HTMLSOUP to CNXML transformation
-def xsl_transform(content, bDownloadImages):
+def xsl_transform(content):
     # 1
     strTidiedHtml = tidy_and_premail(content)
 

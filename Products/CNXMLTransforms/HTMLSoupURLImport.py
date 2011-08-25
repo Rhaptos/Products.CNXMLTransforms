@@ -24,7 +24,7 @@ class htmlsoup_url_to_cnxml:
     def convert(self, data, outdata, **kwargs):
         strUrl = data
         strHtml = urllib2.urlopen(strUrl).read()
-        strCnxml = htmlsoup_to_cnxml(data)
+        strCnxml = htmlsoup_to_cnxml(strHtml)
         outdata.setData(strCnxml)
         # outdata.setSubObjects(objects) # do not add subobjects now
         return outdata
