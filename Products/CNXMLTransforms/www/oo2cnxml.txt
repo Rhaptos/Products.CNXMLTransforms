@@ -1,0 +1,8 @@
+To convert odt2cnxml run the following transforms in order:
+oo2red-escape.xsl
+oo2oo.xsl
+oo2cnxml-headers.xsl
+oo2cnxml.xsl
+oo2cnxml-cleanup.xsl
+id-generation.xsl
+
