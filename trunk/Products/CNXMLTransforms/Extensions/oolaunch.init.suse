@@ -1,0 +1,48 @@
+#! /bin/bash
+# Copyright (c) 2005 International University Bremen.
+#
+# Author: Normen Mueller <n.mueller@iu-bremen.de>
+# Contributor: Ross J. Reedstrom <reedstrm@rice.edu>
+#
+# /etc/init.d/oobg
+# /home/zope/bin/oobg.sh
+#
+# System startup script for OpenOffice Writer
+# running in Xvfb, a virtual X server
+#
+### BEGIN INIT INFO
+# Provides: Xvfb swriter
+# Required-Start: 
+# X-UnitedLinux-Should-Start: 
+# Required-Stop: 
+# Default-Start:
+# Default-Stop: 
+# Description: OpenOffice Writer startup in Xvfb
+### END INIT INFO
+
+
+case "$1" in
+  start)
+    echo "Starting virtual X frame buffer: Xvfb"
+    startproc /usr/X11R6/bin/Xvfb :1 -ac -fp /usr/X11R6/lib/X11/fonts/misc/ -fbdir /tmp -screen 0 320x200x24 &
+    echo "Starting OpenOffice: swriter"
+    startproc /home/zope/OpenOffice.org1.1.5/program/swriter "-accept=socket,host=localhost,port=2002;urp;" -display :1 &
+    ;;
+  stop)
+    echo "Stopping OpenOffice: swriter"
+    killproc -TERM /home/zope/OpenOffice.org1.1.5/program/swriter
+    echo "Stopping virtual X frame buffer: Xvfb"
+    killproc -TERM /usr/X11R6/bin/Xvfb
+    echo "Removing lock files"
+    test -e /home/zope/OpenOffice.org1.1.5/.lock && rm -r /home/zope/OpenOffice.org1.1.5/.lock
+    ;;
+  restart)
+    $0 stop
+    $0 start
+    ;;
+  *)
+        echo "Usage: /etc/init.d/oobg {start|stop|restart}"
+        exit 1
+esac
+
+exit 0

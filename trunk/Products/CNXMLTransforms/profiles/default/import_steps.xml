@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<import-steps>
+  <import-step id="cnxmltransforms-install" version="20090921-01"
+      handler="Products.CNXMLTransforms.setuphandlers.install"
+      title="">
+    Install CNXMLTransforms
+  </import-step>
+</import-steps>

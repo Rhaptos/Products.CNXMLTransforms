@@ -1,0 +1,150 @@
+CNXMLTransforms-0.20
+  - added trustedzip import
+
+CNXMLTransforms-0.19
+  - extend sword import support, additional atompub support
+
+CNXMLTransforms-0.18
+  - sword import support
+
+CNXMLTransforms-0.17
+  - modify ZipExport/Import to provide/ignore auto_upgraded cnxml
+
+CNXMLTransforms-0.16
+  - performance of add*.py improved dramatically
+
+CNXMLTransforms-0.15
+  - generic setup refactor. Rhaptos 2.0 release
+  - light-weight-branding
+  - make latex importer work when harvesting is turned off. the temporary
+    file we create on the local FS must end '.zip'.  This change was made
+    for Enterprise Rhaptos.
+
+CNXMLTransforms-0.14
+  - collection-structure-redesign-1 (Oct. 22, 2009)
+    - create ZCTL queue handler for Module export
+    - make Module Zip exportwork with published modules as well as RMEs
+    - update Latex and OO/Word converters to handle CNXML 0.7
+
+CNXMLTransforms-0.13
+  - Module Edit Workflow (DATE)
+    - DETAILS HERE      
+  
+CNXMLTransforms-0.12.2
+  - cnxml-0.6-hot-fix, third pass (06 Mar 2009)
+    - auto generate missing @id for word and latex importers (#8265)
+
+CNXMLTransforms-0.12.1
+  - cnxml-0.6-hot-fix, first pass (04 Feb 2009)
+    - accept ".jpeg" images through LaTeX importer (#8209)
+
+CNXMLTransforms-0.12
+  - cnxml-0.6 (30 Jan 2009)
+    - latex \texttt{} now translates well in the latex importer
+    - latex importer can now handle .ps files
+    - pdflatex takes .png image files. added support in the latex importer
+      for these .png files
+    - '(\ref{xxx})' is a LaTeX usage paradigm. the surrounding parens do not
+      import well. it would better for the surrounding parens to be
+      removed, for both the online and print pipelines. use sed to remove the 
+      surrounding parens.
+    - tralics changed their cite xml tag
+    - multi-line sed magic to remove table/figure/section text prior to
+      references now guarantess that whitespace preceeds the match
+    - added the required id attribute to nodes needing it in cnxml 0.6
+    - Removed DOCTYPE statement from output
+    - Converted <cnxn> to <link>
+    - MathML and <link> nodes can now be in <title> and <caption> nodes. 
+    - Using Jing to validate
+    - mdml 0.4 changes
+    - no longer allow math in a bib entry
+    - Modified or added logic for the following elements
+      - <code>
+      - <table>
+      - <emphasis>
+      - <footnote>
+      - <media>
+      - <image>
+      - <quote>
+      - <list>
+
+CNXMLTransforms-0.11
+    - added new CNXML styles to the Word template
+
+CNXMLTransforms-0.10
+    - run tralics with its full install for latex import
+
+CNXMLTransforms-0.9
+    - fixes to make fewer word imports fail.
+
+CNXMLTransforms-0.8
+    - latex importer
+    - word import: more mappings from MS private use area unicode to UTF-8.
+
+CNXMLTransforms-0.7
+    - Equations on their own line are now given equation tags in the generated cnxml (#3863)
+    - Translate some Microsoft private-area Unicode characters (#3495 et al.)
+    - Post-plone25 fixes for debug scripts
+    - Better empty-paragraph ignoring
+    - Handle style names (or other attributes) that contain quotes
+    - Working branch for this release was ooimport-v4
+
+CNXMLTransforms-0.6
+    - upgrade to Plone 2.5
+    - Lorne and Kyle's work on platform-specific oolaunch scripts
+
+CNXMLTransforms-0.5
+    - import MathML from Word documents
+    - fix bugs that were blocking Word imports
+
+CNXMLTransforms-0.4
+    - harvest imported Word files!
+
+CNXMLTransforms-0.3.1
+    - fix image extensions in the imported CNXML
+
+CNXMLTransforms-0.3
+  - rename transform sources (only one transform per module is allowed)
+    - OOoTransform -> OOoImport, etc
+    - this breaks stuff! delete transforms before upgade of code. or recreate portal_transforms.
+  - added export transforms
+    - Authentic
+    - Zip
+    - viewable Zip (not really ready yet, pending design)
+      - note: customized 'getTypes' on the XHTMLExport, destroyed by future reinstalls
+    - IMS
+  - add import transforms
+    - Zip
+  - refactor installer, added uninstall
+    - will fix problems like above in the future
+  - move AuthenticImportExport into CNXMLTransforms from CNXMLDocument
+  - added upgrade scripts
+
+CNXMLTransforms-0.2
+  - Fix bug #2138 ('office'dtd' error caused by some Word docs)
+  - Fix bug #2121 (tables with column spanning don't work)
+  - Make sure Windows font fixes occur even if sectioning doesn't
+  - Improved section heading detection
+
+CNXMLTransforms-0.1
+  - added other import transforms
+    - Authentic
+    - XHTML
+
+CNXMLTransforms-0.0
+  - created transforms structure
+  - took over functions of OOoImportTool
+
+  
+HISTORICAL
+
+OOoImportTool-0.3
+  - Added licensing info and docs
+  - Renamed RISA to Rhaptos
+
+OOoImportTool-0.2
+  - Use XMLService from CNXMLDocument
+  - Delete temp files
+
+OOoImportTool-0.1
+  - Initial release
