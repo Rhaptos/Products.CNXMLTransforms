@@ -90,6 +90,9 @@ class sword_to_folder:
                         latex_to_folder().convert(unzipfile, outdata,
                                         original_file_name='sword-import-file.tex',
                                         user_name=kwargs['user_name'])
+                        # LaTeX transform returns straight text, make it
+                        # a file object
+                        outdata.setData(StringIO(outdata.getData()))
                     else:
                         objects[modname] = unzipfile
                 else:
