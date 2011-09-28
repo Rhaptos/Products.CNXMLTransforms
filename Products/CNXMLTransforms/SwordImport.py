@@ -21,6 +21,7 @@ import zLOG
 
 from Products.PortalTransforms.interfaces import itransform
 from Products.CNXMLTransforms.OOoImport import oo_to_cnxml
+from Products.CNXMLTransforms.LatexImport import latex_to_folder
 from Products.CNXMLDocument import XMLService
 from helpers import SWORD2RME_XSL
 from helpers import SWORD_INSERT_ATTRIBUTION_XSL
@@ -79,11 +80,18 @@ class sword_to_folder:
                 if unzipfile:
                     outdata.setData(StringIO(unzipfile))
             else:
-                extensionStart = modname.rfind('.')
-                if not containsIndexCnxml and (extensionStart != -1) and \
-                   (modname[extensionStart+1:] in ['odt','sxw','docx','rtf','doc']):
-                    # This is a word file
-                    oo_to_cnxml().convert(unzipfile, outdata, **kwargs)
+                if not containsIndexCnxml:
+                    if [True for e in ('.odt', '.sxw', '.docx', \
+                        '.rtf', '.doc') if modname.endswith(e)]:
+                        # This is a word file
+                        oo_to_cnxml().convert(unzipfile, outdata, **kwargs)
+                    elif modname.endswith('.tex'):
+                        # This is LaTeX
+                        latex_to_folder().convert(unzipfile, outdata,
+                                        original_file_name='sword-import-file.tex',
+                                        user_name=kwargs['user_name'])
+                    else:
+                        objects[modname] = unzipfile
                 else:
                     objects[modname] = unzipfile
 
