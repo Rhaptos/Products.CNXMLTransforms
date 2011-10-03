@@ -23,6 +23,7 @@ from Products.PortalTransforms.interfaces import itransform
 from Products.CNXMLTransforms.OOoImport import oo_to_cnxml
 from Products.CNXMLTransforms.LatexImport import latex_to_folder
 from Products.CNXMLDocument import XMLService
+from helpers import CNXImportError
 from helpers import SWORD2RME_XSL
 from helpers import SWORD_INSERT_ATTRIBUTION_XSL
 from helpers import XML2JSON_XSL
@@ -61,7 +62,22 @@ class sword_to_folder:
         meta = outdata.getMetadata()
         meta['properties'] = {}
         objects = {}
+
         containsIndexCnxml = ('index.cnxml' in namelist)
+        wordfiles = len([True for m in namelist for e in \
+                                ('.odt', '.sxw', '.docx', \
+                                '.rtf', '.doc') if m.endswith(e)])
+        latexfiles = len([True for m in namelist if m.endswith('.tex')])
+
+        if sum([int(containsIndexCnxml), wordfiles, latexfiles]) > 1:
+            # The upload contains more than one transformable file, ie
+            # it has a index.cnxml and latex/word content, or it has both latex
+            # and word content, or more than one latex or word file.
+            raise CNXImportError(
+                "Import has more than one transformable file. It has "
+                "%d index.cnxml files, %d word files and "
+                "%d LaTeX files" % (containsIndexCnxml, wordfiles, latexfiles))
+
         for modname in namelist:
             if not modname:               # some zip programs show directories by themselves
               continue
