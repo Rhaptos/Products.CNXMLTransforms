@@ -92,7 +92,7 @@ class zip_to_folder:
 
                     # First, direct copies
                     for k in ('abstract','title','language'):
-                        val = metadict[k]
+                        val = metadict.get(k)
                         if type(val) == type(u''):
                             val = val.encode('UTF-8')
                         if not(val):
@@ -110,17 +110,21 @@ class zip_to_folder:
                             mdata.update(listdict)
 
                     # Rename
-                    mdata['objectId'] = metadict['content-id'].encode('UTF-8')
-                    mdata['license'] = metadict['license']['url'].encode('UTF-8')
+                    if metadict.has_key('content-id'):
+                        mdata['objectId'] = metadict['content-id'].encode('UTF-8')
+                    if metadict.has_key('license'):
+                        mdata['license'] = metadict['license']['url'].encode('UTF-8')
 
                     # DateTime strings
                     for k in ('created','revised'):
-                        mdata[k] = DateTime(metadict[k])
+                        if metadict.has_key(k):
+                            mdata[k] = DateTime(metadict[k])
 
                     # And the trickiest, unwrap and split roles (userids must be str, not unicode)
-                    mdata.update(dict([(r['type']+'s',str(r['_text']).split()) for r in metadict['roles']['role']]))
-                    #FIXME need to do collaborators here, as well - untested below
-                    mdata['collaborators'] = {}.fromkeys(' '.join([r['_text'] for r in metadict['roles']['role']]).encode('UTF-8').split()).keys()
+                    if metadict.has_key('roles'):
+                        mdata.update(dict([(r['type']+'s',str(r['_text']).split()) for r in metadict['roles']['role']]))
+                        #FIXME need to do collaborators here, as well - untested below
+                        mdata['collaborators'] = {}.fromkeys(' '.join([r['_text'] for r in metadict['roles']['role']]).encode('UTF-8').split()).keys()
                 else:
                     ignored.append('index.cnxml')
             else:

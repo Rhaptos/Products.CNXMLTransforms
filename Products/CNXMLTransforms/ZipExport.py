@@ -20,6 +20,7 @@ from StringIO import StringIO
 from Products.PortalTransforms.interfaces import itransform
 from Products.RhaptosModuleStorage.ModuleView import ModuleView
 from Products.CMFCore.utils import getToolByName
+from Products.Archetypes.WebDAVSupport import PdataStreamIterator
 
 import zLOG
 def log(msg, severity=zLOG.INFO):
@@ -85,6 +86,8 @@ def makeZipFile(data, containername="", getContent=('getSource','manage_FTPget',
         if getRepr:
             if callable(getRepr):
                 val = getRepr()
+                if isinstance(val, PdataStreamIterator):
+                    val = val.file.read()
             else:
                 val = getRepr
             if not val: val = ''
