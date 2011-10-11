@@ -99,12 +99,6 @@ class sword_to_folder:
                 # hook here for featured links
                 # elaborate the metadata returned in order to add the featured links.
                 meta['featured_links'] = []
-                """
-                <link-group type="example">
-                    <link url="http://localhost:8080/featured_module"
-                        strength="3">Test feature link</link>
-                </link-group>
-                """
                 if unzipfile:
                     outdata.setData(StringIO(unzipfile))
                     dom = parseString(unzipfile)
