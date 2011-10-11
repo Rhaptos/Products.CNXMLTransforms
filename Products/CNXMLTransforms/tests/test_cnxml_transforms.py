@@ -88,6 +88,10 @@ class TestCNXMLTransforms(base.RhaptosTestCase):
 
         text, subobjs, meta = doTransform(
             context, name, data, meta=1, **kwargs)
+
+        self.assertEqual(text.read(), reference_text, 'The text was not extracted correctly.')
+        self.assertEqual(subobjs, {}, 'There should be no sub objects.')
+        self.assertEqual(meta, reference_metadata, 'Metadata was not set correctly.')
         print context
 
     def test_import_existing_links(self):
@@ -102,3 +106,12 @@ def test_suite():
     suite = TestSuite()
     suite.addTest(makeSuite(TestCNXMLTransforms))
     return suite
+
+
+""" test data below """
+
+reference_text = \
+u'<?xml version="1.0"?>\n<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml" xmlns:bib="http://bibtexml.sf.net/" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:q="http://cnx.rice.edu/qml/1.0" id="new" cnxml-version="0.7" module-id="new">\n\n<title>My first module</title>\n<metadata mdml-version="0.5">\n  <!-- WARNING! The \'metadata\' section is read only. Do not edit below.\n       Changes to the metadata section in the source will not be saved. -->\n  <md:repository>http://localhost:8080/site/content</md:repository>\n  <md:content-id>new</md:content-id>\n  <md:title>My first module</md:title>\n  <md:version>**new**</md:version>\n  <md:created>2011/10/11 10:16:37.837 GMT+2</md:created>\n  <md:revised>2011/10/11 10:16:37.957 GMT+2</md:revised>\n  <md:actors>\n    <md:person userid="rijk">\n      <md:firstname>Rijk</md:firstname>\n      <md:surname>Stofberg</md:surname>\n      <md:fullname>Rijk Stofberg</md:fullname>\n      <md:email>rijk@upfrontsystems.co.za</md:email>\n    </md:person>\n  </md:actors>\n  <md:roles>\n    <md:role type="author">rijk</md:role>\n    <md:role type="maintainer">rijk</md:role>\n    <md:role type="licensor">rijk</md:role>\n  </md:roles>\n  <md:license url="http://creativecommons.org/licenses/by/3.0/"/>\n  <!-- For information on license requirements for use or modification, see license url in the\n       above <md:license> element.\n       For information on formatting required attribution, see the URL:\n         CONTENT_URL/content_info#cnx_cite_header\n       where CONTENT_URL is the value provided above in the <md:content-url> element.\n  -->\n  <md:keywordlist>\n    <md:keyword>Arty stuff</md:keyword>\n  </md:keywordlist>\n  <md:subjectlist>\n    <md:subject>Arts</md:subject>\n  </md:subjectlist>\n  <md:abstract>Arty stuff module</md:abstract>\n  <md:language>en</md:language>\n  <!-- WARNING! The \'metadata\' section is read only. Do not edit above.\n       Changes to the metadata section in the source will not be saved. -->\n</metadata>\n\n<content>\n  <para id="delete_me">\n     <!-- Insert module text here -->\n  </para>\n</content>\n\n</document>\n'
+
+reference_metadata = \
+    {'mimetype': 'application/cmf+folderish', 'properties': {}, 'encoding': None}
