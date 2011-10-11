@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml" xmlns:bib="http://bibtexml.sf.net/" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:q="http://cnx.rice.edu/qml/1.0" id="new" cnxml-version="0.7" module-id="new">
+
+<title>My first module</title>
+<metadata mdml-version="0.5">
+  <!-- WARNING! The 'metadata' section is read only. Do not edit below.
+       Changes to the metadata section in the source will not be saved. -->
+  <md:repository>http://localhost:8080/site/content</md:repository>
+  <md:content-id>new</md:content-id>
+  <md:title>My first module</md:title>
+  <md:version>**new**</md:version>
+  <md:created>2011/10/11 10:16:37.837 GMT+2</md:created>
+  <md:revised>2011/10/11 10:16:37.957 GMT+2</md:revised>
+  <md:actors>
+    <md:person userid="rijk">
+      <md:firstname>Rijk</md:firstname>
+      <md:surname>Stofberg</md:surname>
+      <md:fullname>Rijk Stofberg</md:fullname>
+      <md:email>rijk@upfrontsystems.co.za</md:email>
+    </md:person>
+  </md:actors>
+  <md:roles>
+    <md:role type="author">rijk</md:role>
+    <md:role type="maintainer">rijk</md:role>
+    <md:role type="licensor">rijk</md:role>
+  </md:roles>
+  <md:license url="http://creativecommons.org/licenses/by/3.0/"/>
+  <!-- For information on license requirements for use or modification, see license url in the
+       above <md:license> element.
+       For information on formatting required attribution, see the URL:
+         CONTENT_URL/content_info#cnx_cite_header
+       where CONTENT_URL is the value provided above in the <md:content-url> element.
+  -->
+  <md:keywordlist>
+    <md:keyword>Arty stuff</md:keyword>
+  </md:keywordlist>
+  <md:subjectlist>
+    <md:subject>Arts</md:subject>
+  </md:subjectlist>
+  <md:abstract>Arty stuff module</md:abstract>
+  <md:language>en</md:language>
+  <!-- WARNING! The 'metadata' section is read only. Do not edit above.
+       Changes to the metadata section in the source will not be saved. -->
+</metadata>
+
+<content>
+  <para id="delete_me">
+     <!-- Insert module text here -->
+  </para>
+</content>
+
+</document>
