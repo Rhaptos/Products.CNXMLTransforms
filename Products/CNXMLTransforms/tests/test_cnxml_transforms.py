@@ -74,7 +74,7 @@ class TestCNXMLTransforms(base.RhaptosTestCase):
     def test_zip_to_folder(self):
         self.assertEqual(1, 1)
 
-    def test_import_new_links(self):
+    def test_sword_to_folder(self):
         self._setupRhaptos()
         context = self.folder
         name = "sword_to_folder"
@@ -93,6 +93,9 @@ class TestCNXMLTransforms(base.RhaptosTestCase):
         self.assertEqual(subobjs, {}, 'There should be no sub objects.')
         self.assertEqual(meta, reference_metadata, 'Metadata was not set correctly.')
         print context
+
+    def test_import_new_links(self):
+        self.fail()
 
     def test_import_existing_links(self):
         self.fail()
