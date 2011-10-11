@@ -98,7 +98,7 @@ class sword_to_folder:
             elif modname == "index.cnxml":
                 # hook here for featured links
                 # elaborate the metadata returned in order to add the featured links.
-                meta['featured_links'] = {}
+                meta['featured_links'] = []
                 """
                 <link-group type="example">
                     <link url="http://localhost:8080/featured_module"
@@ -109,20 +109,23 @@ class sword_to_folder:
                     outdata.setData(StringIO(unzipfile))
                     dom = parseString(unzipfile)
                     groups = dom.getElementsByTagName('link-group')
+                    links = meta.get('featured_links', [])
                     for group in groups:
                         group_type = group.getAttribute('type').encode(self.encoding)
-                        links = []
                         for link in group.getElementsByTagName('link'):
-                            text = link.firstChild.toxml().encode(
+                            title = link.firstChild.toxml().encode(
                                 self.encoding)
                             url = link.getAttribute('url').encode(
                                 self.encoding)
                             strength = link.getAttribute('strength').encode(
                                 self.encoding)
-                            links.append({'text': text,
-                                          'url': url,
-                                          'strength': strength})
-                        meta['featured_links'][group_type] = links
+                            links.append({'url':url,
+                                          'title':title,
+                                          'type':group_type,
+                                          'strength':strength
+                                         }
+                            )
+                        meta['featured_links'] = links
             else:
                 if not containsIndexCnxml:
                     if [True for e in ('.odt', '.sxw', '.docx', \

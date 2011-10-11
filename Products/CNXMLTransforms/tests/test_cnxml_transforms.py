@@ -106,7 +106,6 @@ class TestCNXMLTransforms(base.RhaptosTestCase):
         self.assertEqual(subobjs, {}, 'There should be no sub objects.')
         self.assertEqual(
             meta, no_link_reference_meta, 'Metadata was not set correctly.')
-        print context
 
     def test_import_new_links(self):
         self._setupRhaptos()
@@ -160,16 +159,17 @@ u'<?xml version="1.0"?>\n<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="h
 
 no_link_reference_meta = \
     {'mimetype': 'application/cmf+folderish',
-     'featured_links': {},
+     'featured_links': [],
      'properties': {},
      'encoding': None}
 
 one_link_reference_meta = \
-    {'mimetype': 'application/cmf+folderish',
-     'featured_links': {'example': [{'url': 'http://localhost:8080/featured_module',
-                                     'text': 'Test feature link',
-                                     'strength': '3'}
-                                   ]
-                       },
-     'properties': {},
-     'encoding': None}
+     {'mimetype': 'application/cmf+folderish',
+      'featured_links': [{'url': 'http://localhost:8080/featured_module',
+                          'strength': '3',
+                          'type': 'example',
+                          'title': 'Test feature link'}
+                        ],
+      'properties': {},
+      'encoding': None
+     }
