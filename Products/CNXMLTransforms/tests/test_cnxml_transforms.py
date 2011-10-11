@@ -39,15 +39,6 @@ ZopeTestCase.installProduct('RhaptosSword')
 ZopeTestCase.installProduct('CNXML')
 ZopeTestCase.installProduct('UniFile')
 
-from Products.PloneTestCase import PloneTestCase
-
-PloneTestCase.setupPloneSite(products=['RhaptosSword'],
-    extension_profiles=[
-        'Products.CNXMLTransforms:default',
-        'Products.UniFile:default',
-        ]
-    )
-
 DIRNAME = os.path.dirname(__file__)
 
 def diff(a, b):
@@ -59,11 +50,6 @@ class TestCNXMLTransforms(base.RhaptosTestCase):
 
     def afterSetUp(self):
         pass
-
-    def _setupRhaptos(self):
-        # XXX: This method needs to move to afterSetup, but afterSetup is not
-        # being called for some reason.
-        objectIds = self.portal.objectIds()
 
     def beforeTearDown(self):
         pass
@@ -81,7 +67,6 @@ class TestCNXMLTransforms(base.RhaptosTestCase):
         self.assertEqual(1, 1)
 
     def test_sword_to_folder(self):
-        self._setupRhaptos()
         context = self.folder
         name = "sword_to_folder"
         filename = 'module.zip'
@@ -118,7 +103,6 @@ class TestCNXMLTransforms(base.RhaptosTestCase):
             'Metadata was not set correctly.')
 
     def test_import_new_links(self):
-        self._setupRhaptos()
         context = self.folder
         name = "sword_to_folder"
         filename = 'module_with_one_featured_link.zip'
