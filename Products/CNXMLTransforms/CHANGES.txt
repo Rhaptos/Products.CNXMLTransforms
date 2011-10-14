@@ -1,3 +1,6 @@
+CNXMLTransforms-0.22
+  - featured links import
+
 CNXMLTransforms-0.21
   - sword-service release
 
