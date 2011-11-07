@@ -1,2 +1,0 @@
-app.plone.portal_quickinstaller.reinstallProducts(['CNXMLTransforms'])
-get_transaction().commit()

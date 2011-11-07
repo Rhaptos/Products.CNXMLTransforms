@@ -1,5 +1,0 @@
-app.plone.portal_quickinstaller.reinstallProducts(['CNXMLTransforms'])
-app.plone.portal_transforms.oo_to_cnxml._config['harvest_dir_failure']='/var/local/word-harvest/bad'
-app.plone.portal_transforms.oo_to_cnxml._config['harvest_dir_success']='/var/local/word-harvest/good'
-app.plone.portal_transforms.oo_to_cnxml._p_changed=1
-get_transaction().commit()

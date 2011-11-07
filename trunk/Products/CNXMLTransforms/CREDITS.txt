@@ -1,6 +1,0 @@
-Authors: 
-transforms: J Cameron Coooper
-OOoImportTool code: Ross Reedstrom, Adan Galvan, and Brent Hendricks
-
-Sponsor: The Connexions Project
-http://cnx.rice.edu
