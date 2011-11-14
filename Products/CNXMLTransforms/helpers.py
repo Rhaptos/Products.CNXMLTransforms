@@ -65,7 +65,11 @@ CNXML2JSON_XSL = os.path.join(package_home(GLOBALS), 'www', 'cnxml2json.xsl')
 MDML2JSON_XSL = os.path.join(package_home(GLOBALS), 'www', 'mdml2json.xsl')
 XSL_LOCATION = os.path.join(package_home(GLOBALS), 'www')
 
-class OOoImportError(Exception):
+class CNXImportError(Exception):
+    """ Special exception type to bear ingormation about import problems. """
+    pass
+
+class OOoImportError(CNXImportError):
     """Special exception type to bear information about OOImport problems.
 
     This class is made importable to restricted code so that Python

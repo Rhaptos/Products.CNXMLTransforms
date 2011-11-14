@@ -1,3 +1,6 @@
+CNXMLTransforms-0.21
+  - sword-service release
+
 CNXMLTransforms-0.20
   - added trustedzip import
 
