@@ -1,3 +1,7 @@
+CNXMLTransforms-0.22
+  - modern textbook appearance
+  - CCAP word importer changes (red text)
+
 CNXMLTransforms-0.21
   - sword-service release
 
