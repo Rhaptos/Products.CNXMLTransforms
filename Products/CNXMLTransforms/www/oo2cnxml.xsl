@@ -2,10 +2,22 @@
 
 <xsl:stylesheet version="1.0"
   xmlns="http://cnx.rice.edu/cnxml"
-  xmlns:c="http://cnx.rice.edu/cnxml"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  
- xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" xmlns:ooo="http://openoffice.org/2004/office" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:oooc="http://openoffice.org/2004/calc" xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rpt="http://openoffice.org/2005/report" xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2" xmlns:rdfa="http://docs.oasis-open.org/opendocument/meta/rdfa#"  xmlns:m="http://www.w3.org/1998/Math/MathML"
+  xmlns:office="http://openoffice.org/2000/office"
+  xmlns:style="http://openoffice.org/2000/style" 
+  xmlns:text="http://openoffice.org/2000/text" 
+  xmlns:table="http://openoffice.org/2000/table" 
+  xmlns:draw="http://openoffice.org/2000/drawing" 
+  xmlns:fo="http://www.w3.org/1999/XSL/Format" 
+  xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xmlns:number="http://openoffice.org/2000/datastyle" 
+  xmlns:svg="http://www.w3.org/2000/svg" 
+  xmlns:chart="http://openoffice.org/2000/chart" 
+  xmlns:dr3d="http://openoffice.org/2000/dr3d" 
+  xmlns:math="http://www.w3.org/1998/Math/MathML" 
+  xmlns:form="http://openoffice.org/2000/form" 
+  xmlns:script="http://openoffice.org/2000/script"
+  xmlns:m="http://www.w3.org/1998/Math/MathML"
   office:class="text" office:version="1.0"
   exclude-result-prefixes="office style text table draw fo xlink number svg chart dr3d math form script"
   >
@@ -26,65 +38,61 @@
 
   <xsl:key name="bookmark-start" match="/descendant::text:bookmark-start" use="@text:name"/>
 
-  <xsl:template match="@*">
-    <xsl:copy/>
-  </xsl:template>
+  <xsl:template match="/">
 
-  <xsl:template match="*">
-    <xsl:message>WARNING: Could not match Open Office Element <xsl:value-of select="name()"/>. Applying children. TODO: XPath to it</xsl:message>
-    <xsl:comment> <xsl:value-of select="name()"/> </xsl:comment>
-    <xsl:apply-templates select="node()"/>
-    <xsl:comment> /<xsl:value-of select="name()"/> </xsl:comment>
-  </xsl:template>
+    <document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml/0.4" xmlns:bib="http://bibtexml.sf.net/" xmlns:q="http://cnx.rice.edu/qml/1.0" module-id="m12345" cnxml-version="0.7">
+      <xsl:attribute name="id">
+        <xsl:value-of select ="generate-id()" />
+      </xsl:attribute> 
 
-  <!-- Discard the :para element when it only contains c: elements -->
-  <xsl:template match="text:p[normalize-space(text()) = '' and count(*) = count(c:*) and count(*) &gt;= 1]">
-    <xsl:message>DEBUG: Unwrapping a para around RED elements <xsl:for-each select="*"><xsl:value-of select="name()"/></xsl:for-each></xsl:message>
-    <xsl:apply-templates select="node()"/>
-  </xsl:template>
-
-<xsl:template match="text:list">
-  <c:list>
-    <xsl:apply-templates select="@*|node()"/>
-  </c:list>
-</xsl:template>
-
-  <xsl:template match="c:*">
-    <xsl:copy>
-      <xsl:apply-templates select="@*|node()"/>
-    </xsl:copy>
-  </xsl:template>
-  
-  <xsl:template match="office:document-content|office:body">
-    <xsl:apply-templates select="node()"/>
-  </xsl:template>
-  
-  <xsl:template match="office:scripts|office:font-face-decls|style:*"/>
-
-  <xsl:template match="office:text">
-
-    <document module-id="imported-from-openoffice" id="imported-from-openoffice" cnxml-version="0.7">
       <title>
-        <xsl:text>Untitled Document</xsl:text>
+        <xsl:choose>
+          <xsl:when test="//office:document-content/office:body//text:p[@text:style-name='Title']">
+            <xsl:value-of select="//office:document-content/office:body//text:p[@text:style-name='Title']"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:text>Untitled Document</xsl:text>
+          </xsl:otherwise>
+        </xsl:choose>
       </title>
 
       <content>
-        <xsl:apply-templates select="@*|node()"/>
+        <xsl:choose>
+          <xsl:when test='not(normalize-space(.))'>
+            <!-- text free document.  only do something if there are images. -->
+            <xsl:choose>
+              <xsl:when test="descendant::draw:image">
+                <xsl:apply-templates />
+              </xsl:when> 
+              <xsl:otherwise >
+                <xsl:comment>empty document?</xsl:comment>
+                <para>
+                  <xsl:attribute name='id'>empty-para</xsl:attribute>
+                </para>
+               </xsl:otherwise>
+            </xsl:choose>
+          </xsl:when>
+          <xsl:when test="text:p[@text:style-name='CNXML Glossary Section']">
+            <!-- we have a document with a glossary. process all nodes prior to the first glossary node. -->
+            <xsl:apply-templates select="." mode="GlossarySec"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:apply-templates />
+          </xsl:otherwise>
+        </xsl:choose>
       </content>
-      <xsl:apply-templates select=".//c:glossary">
-        <xsl:with-param name="render" select="1"/>
-      </xsl:apply-templates>
+        <xsl:if test="//text:p/@text:style-name='CNXML Glossary Section'">
+          <glossary>
+            <xsl:if test="//text:p[@text:style-name='CNXML Glossary Section']/text:bookmark or //text:p[@text:style-name='CNXML Glossary Section']/text:bookmark-start">
+              <xsl:attribute name="id">
+                <xsl:value-of select="generate-id(//text:p[@text:style-name='CNXML Glossary Section'])"/>
+              </xsl:attribute>
+            </xsl:if>
+            <!-- only to process the sibling nodes that follow he glossary that are definitions. -->
+            <xsl:apply-templates select="//text:p[@text:style-name='CNXML Glossary Section'][1]/following-sibling::*[@text:style-name='CNXML Definition (Term)' or @text:style-name='CNXML Definition (Meaning)']"/>
+          </glossary>
+        </xsl:if>
     </document>
-  </xsl:template>
-
-  <!-- The Glossary section is moved out of c:content (it's in normal text) and into a separate area -->
-  <xsl:template match="c:glossary">
-    <xsl:param name="render" select="false()"/>
-    <xsl:if test="$render">
-      <xsl:copy>
-        <xsl:apply-templates select="@*|node()"/>
-      </xsl:copy>
-    </xsl:if>
   </xsl:template>
 
   <xsl:template match="*" mode="GlossarySec">
@@ -716,28 +724,46 @@
     <!-- add extension (from $type) if it doesn't already exist. see also 'helpers.parseContent'.
     see also below "Image in a table" -->
     <xsl:variable name='beforeext'>
-      <xsl:value-of select="substring-before(../@draw:name, concat('.',$type))"/>
+      <xsl:value-of select="substring-before(@draw:name, concat('.',$type))"/>
     </xsl:variable>
     <xsl:variable name='name'>
       <xsl:if test="not(string-length($beforeext))">
-        <xsl:value-of select="../@draw:name" />
+        <xsl:value-of select="@draw:name" />
       </xsl:if>
       <xsl:if test="boolean(string-length($beforeext))">
         <xsl:value-of select="$beforeext" />
       </xsl:if>
     </xsl:variable>
 
+    <xsl:variable name='height'>
+      <xsl:choose>
+        <xsl:when test="@svg:height">
+          <xsl:value-of select="round(number(substring-before(@svg:height, 'inch'))*100)" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="0" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name='width'>
+      <xsl:choose>
+        <xsl:when test="@svg:width">
+          <xsl:value-of select="round(number(substring-before(@svg:width, 'inch'))*100)" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="0" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
     <xsl:choose>
       <xsl:when test="self::draw:object-ole and parent::text:p">
-        <xsl:message>WARNING: OLE Objects are not supported (this might be math)</xsl:message>
         ***SORRY, THIS MEDIA TYPE IS NOT SUPPORTED.***
       </xsl:when>
       <xsl:when test="(self::draw:object-ole)">
-        <xsl:message>WARNING: OLE Objects are not supported (this might be math)</xsl:message>
         <xsl:comment>Sorry, this media type is not supported.</xsl:comment>
       </xsl:when>
       <xsl:when test="($type='svm')">
-        <xsl:message>WARNING: SVM Objects are not supported (this might be math)</xsl:message>
         <xsl:comment>Sorry, this media type is not supported.</xsl:comment>
       </xsl:when>
       <xsl:otherwise>
@@ -774,6 +800,12 @@
                 <xsl:attribute name="id" >
                   <xsl:value-of select="concat($idbase,'__onlineimage')" />
                 </xsl:attribute>
+                <xsl:if test="$height > 0">
+                  <xsl:attribute name="height"><xsl:value-of select="$height"/></xsl:attribute>
+                </xsl:if>
+                <xsl:if test="$width > 0">
+                  <xsl:attribute name="width"><xsl:value-of select="$width"/></xsl:attribute>
+                </xsl:if>
               </image>
             </media>
             <xsl:if test="../following-sibling::text:p[1]/@text:style-name='CNXML Figure Caption'">

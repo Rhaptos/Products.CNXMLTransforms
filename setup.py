@@ -27,7 +27,6 @@ setup(name='Products.CNXMLTransforms',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'rhaptos.cnxmlutils',
       ],
       tests_require = [
            'zope.testing>=3.5',
