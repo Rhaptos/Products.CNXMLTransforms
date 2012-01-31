@@ -152,30 +152,20 @@ def addSectionTags(content):
     return dh.document.encode('UTF-8')
 
 def xsl_transform(content):
-    import libxml2
-    import libxslt
+    from lxml import etree
 
     #Parse stylesheet
-    styleParser = libxml2.createFileParserCtxt(HTML2CNXML_XSL)
-    #styleParser.replaceEntities(1)
-    styleParser.parseDocument()
-    styledoc = styleParser.doc()
-    style = libxslt.parseStylesheetDoc(styledoc)
+    stylesheet = etree.parse(HTML2CNXML_XSL)
+    style = etree.XSLT(stylesheet)
 
     #Parse document
-    docParser = libxml2.createMemoryParserCtxt(content, len(content))
-    #docParser.replaceEntities(1)
-    docParser.parseDocument()
-    doc = docParser.doc()
+    doc = etree.fromstring(content)
 
-    resultDoc = style.applyStylesheet(doc, None)
-    if resultDoc:
-        result = style.saveResultToString(resultDoc)
-        resultDoc.freeDoc()
+    result = style(doc)
+    if result:
+        result = str(resultDoc)
     else:
         raise ValueError, "Unable to perform transform " + stylesheet
-    style.freeStylesheet()
-    doc.freeDoc()
 
     return result
 
