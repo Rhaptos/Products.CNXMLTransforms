@@ -36,6 +36,8 @@ from addmathml import addMathML
 from helpers import symbolReplace, parseContent, parseManifest, UNICODE_DICTIONARY
 from helpers import OO2CNXML_XSL, OO2OO_XSL, CNXMLTIDY_XSL, OOCONVERT, OOoImportError, harvestImportFile, moveImportFile
 
+from rhaptos.cnxmlutils import odt2cnxml
+
 import urllib
 
 class oo_to_cnxml:
@@ -304,25 +306,11 @@ class oo_to_cnxml:
             self.moveToBad(strFileName)
             raise OOoImportError, "Could not convert file"
 
+        fileOOo = StringIO(binOOoData)
         try:
-            fileOOo = StringIO(binOOoData)
-            zipfileob = zipfile.ZipFile(fileOOo, 'rb')
-        except zipfile.BadZipfile:
-            zLOG.LOG("OOo2CNXML Transform", zLOG.INFO, "Open Office returns something besides the expected zip file.")
-            # don't know for sure if the conversion failed, so we leave
-            # the harvested word file in the GOOD directory.
-            raise OOoImportError, "Could not convert file"
-
-        # massage OOo XML and do a XSL transform to produce CNXML
-        strOOoXml = zipfileob.read('content.xml')
-
-        if len(strOOoXml) == 0:
-            zLOG.LOG("OOo2CNXML Transform", zLOG.INFO, "Open Office does not return the expected XML.  Open Office may have failed in converting the input Word document into its native file XML format.")
-            self.moveToBad(strFileName)
-            raise OOoImportError, "Could not convert file"
-
-        try:
-            strCnxml = self.toCnxml(strOOoXml, zipfileob)
+            elCnxml, filesDict, errors = odt2cnxml.transform(fileOOo)
+            from lxml import etree
+            strCnxml = etree.tostring(elCnxml, pretty_print=True)
         except OOoImportError:
             # toCnxml() wrote log messages
             self.moveToBad(strFileName)
@@ -332,21 +320,7 @@ class oo_to_cnxml:
         outdata.setData(fileCnxmlClean)
 
         # Add images
-        objects = {}
-        manifest = zipfileob.read('META-INF/manifest.xml')
-        files = parseContent(strOOoXml)
-        for type, path in parseManifest(manifest):
-            if type.startswith('image/'):
-                try:
-                    names = files[path]
-                except KeyError:
-                    # Included image not actually referenced, skip it
-                    continue
-                for name in names:
-                    unmangled_name = urllib.unquote(name)
-                    zLOG.LOG("OOo2CNXML Transform", zLOG.INFO, "type=" + str(type) + " path=" + str(path) + " name=" + unmangled_name)
-                    img = zipfileob.read(path)
-                    objects[unmangled_name] = img
+        objects = filesDict #{}
         outdata.setSubObjects(objects)
 
         self.cleanup(strFileName)
