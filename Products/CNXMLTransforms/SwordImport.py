@@ -19,6 +19,8 @@ from StringIO import StringIO
 import os
 import zLOG
 
+from xml.dom.minidom import parseString
+
 from Products.PortalTransforms.interfaces import itransform
 from Products.CNXMLTransforms.OOoImport import oo_to_cnxml
 from Products.CNXMLTransforms.LatexImport import latex_to_folder
@@ -35,6 +37,7 @@ class sword_to_folder:
     __name__ = "sword_to_folder"
     inputs  = ("application/zip",)
     output = "application/cmf+folderish"
+    encoding = 'utf-8'
 
     def name(self):
         return self.__name__
@@ -93,8 +96,30 @@ class sword_to_folder:
                 m = json.decode(jsonstr)
                 meta['properties'] = m
             elif modname == "index.cnxml":
+                # hook here for featured links
+                # elaborate the metadata returned in order to add the featured links.
+                meta['featured_links'] = []
                 if unzipfile:
                     outdata.setData(StringIO(unzipfile))
+                    dom = parseString(unzipfile)
+                    groups = dom.getElementsByTagName('link-group')
+                    links = meta.get('featured_links', [])
+                    for group in groups:
+                        group_type = group.getAttribute('type').encode(self.encoding)
+                        for link in group.getElementsByTagName('link'):
+                            title = link.firstChild.toxml().encode(
+                                self.encoding)
+                            url = link.getAttribute('url').encode(
+                                self.encoding)
+                            strength = link.getAttribute('strength').encode(
+                                self.encoding)
+                            links.append({'url':url,
+                                          'title':title,
+                                          'type':group_type,
+                                          'strength':strength
+                                         }
+                            )
+                        meta['featured_links'] = links
             else:
                 if not containsIndexCnxml:
                     if [True for e in ('.odt', '.sxw', '.docx', \
@@ -144,6 +169,7 @@ class sword_to_folder:
         outdata.setSubObjects(objects)
 
         return outdata
+
 
 def register():
     return sword_to_folder()

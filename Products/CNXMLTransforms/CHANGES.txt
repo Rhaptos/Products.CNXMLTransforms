@@ -1,3 +1,6 @@
+CNXMLTransforms-0.22
+  - oerpub api m4 release (lenses, mostly)
+
 CNXMLTransforms-0.21
   - sword-service release
 

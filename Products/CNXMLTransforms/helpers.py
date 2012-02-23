@@ -49,7 +49,7 @@ def makeContent(context, subobjs):
     del context.batchAdd
 
 import os
-import libxml2
+from lxml import etree
 from Globals import package_home
 from config import GLOBALS
 
@@ -83,12 +83,11 @@ def symbolReplace(text, dict):
     return text
 
 def parseContent(content):
-    doc = libxml2.parseDoc(content)
-    ctx = doc.xpathNewContext()
-    ctx.xpathRegisterNs("draw", "http://openoffice.org/2000/drawing")
-    ctx.xpathRegisterNs("xlink", "http://www.w3.org/1999/xlink")
-    paths = [n.getContent().lstrip('#') for n in ctx.xpathEval("//draw:image/@xlink:href")]
-    names = [n.getContent() for n in ctx.xpathEval("//draw:image/@draw:name")]
+    doc = etree.fromstring(content)
+    namespaces={"draw":"http://openoffice.org/2000/drawing",
+               "xlink":"http://www.w3.org/1999/xlink"}
+    paths = [n.lstrip('#') for n in doc.xpath("//draw:image/@xlink:href", namespaces=namespaces)]
+    names = doc.xpath("//draw:image/@draw:name", namespaces=namespaces)
 
     # add the file extension from the path to the human-readable name
     # this must be done in the oo2cnxml transform in the same way
@@ -117,11 +116,10 @@ def parseContent(content):
 
 def parseManifest(manifest):
     # Parsing the manifest file requires that the XML catalog knows how to find Manifest.dtd
-    doc = libxml2.parseDoc(manifest)
-    ctx = doc.xpathNewContext()
-    ctx.xpathRegisterNs("manifest", "http://openoffice.org/2001/manifest")
-    paths = [n.getContent() for n in ctx.xpathEval("//manifest:file-entry/@manifest:full-path")]
-    types = [n.getContent() for n in ctx.xpathEval("//manifest:file-entry/@manifest:media-type")]
+    doc = etree.fromstring(manifest)
+    namespaces={"manifest":"http://openoffice.org/2001/manifest"}
+    paths = doc.xpath("//manifest:file-entry/@manifest:full-path", namespaces=namespaces)
+    types = doc.xpath("//manifest:file-entry/@manifest:media-type", namespaces=namespaces)
     return zip(types, paths)
 
 def harvestImportFile(binData, strHarvestDirectory, strOriginalFileName, strUser):
