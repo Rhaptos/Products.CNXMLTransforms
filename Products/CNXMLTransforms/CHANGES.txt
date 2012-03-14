@@ -1,3 +1,6 @@
+CNXMLTransforms-0.23
+  - modern-textbook release (xhtml+css and ccap word importer improvements)
+
 CNXMLTransforms-0.22
   - oerpub api m4 release (lenses, mostly)
 
