@@ -113,7 +113,10 @@ class zip_to_folder:
                     if metadict.has_key('content-id'):
                         mdata['objectId'] = metadict['content-id'].encode('UTF-8')
                     if metadict.has_key('license'):
-                        mdata['license'] = metadict['license']['url'].encode('UTF-8')
+                        if metadict['license'].has_key('url'):
+                            mdata['license'] = metadict['license']['url'].encode('UTF-8')
+                        else:
+                            mdata['license'] = metadict['license']['href'].encode('UTF-8')
 
                     # DateTime strings
                     for k in ('created','revised'):
